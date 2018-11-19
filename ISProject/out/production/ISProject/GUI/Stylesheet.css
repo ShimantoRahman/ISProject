@@ -1,0 +1,49 @@
+.parent{
+    -fx-background-color: #fff;
+}
+.sidebar{
+    -fx-background-color: #333645;
+}
+.btns{
+    -fx-background-color: transparent;
+}
+.btns:hover{
+    -fx-background-color: #202332;
+}
+.blue-btns{
+    -fx-background-color: #00A2D3;
+}
+.blue-btns:hover{
+    -fx-border-color: #fff;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 3px;
+}
+.blue-btns:pressed{
+    -fx-background-color: #00B4CC;
+}
+.blue-btns-black{
+    -fx-background-color: #00A2D3;
+}
+.blue-btns-black:hover{
+    -fx-border-color: #2F4F4F;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 3px;
+}
+.blue-btns-black:pressed{
+    -fx-background-color: #00B4CC;
+}
+.tf_box{
+    -fx-background-color: transparent;
+    -fx-border-color: #DEDEE4;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+.tf{
+    -fx-background-color: transparent;
+}
+.lbl{
+    -fx-text-fill: #00A2D3;
+}
+.choicebox{
+    -fx-background-color: transparent;
+    -fx-border-color: #DEDEE4;
+}
