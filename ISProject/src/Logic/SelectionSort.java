@@ -2,9 +2,10 @@ package Logic;
 
 import SysteemKlasses.*;
 
-public class SelectionSort {
-    // sorteert een array van toewijzingsaanvragen waarbij de eerste aanvraag de meest gunstig is en de laatste de minst gunstig
-    public static Toewijzingsaanvraag[] sorteer(Toewijzingsaanvraag[] aanvragen) throws ToewijzingsaanvraagException{
+public class SelectionSort implements ISortingAlgoritm{
+    // sorteert een array van toewijzingsaanvragen waarbij de eerste aanvraag de meest gunstig is
+    // en de laatste de minst gunstig
+    public Toewijzingsaanvraag[] sort(Toewijzingsaanvraag[] aanvragen) throws ToewijzingsaanvraagException{
         for (int i = 0; i < aanvragen.length - 1; i++) {
 
             int index = i;
@@ -64,7 +65,8 @@ public class SelectionSort {
         for (Voorkeur voorkeur: aanvraag.getVoorkeuren()) {
             if(voorkeur.getStatus() == StatusVoorkeur.Toegewezen)
                 return voorkeur;
-        } throw new ToewijzingsaanvraagException("In methode 'getToegewezenVoorkeur' is een aanvraag meegegeven zonder voorlopig toegewezen voorkeur");
+        } throw new ToewijzingsaanvraagException("In methode 'getToegewezenVoorkeur' is een aanvraag meegegeven " +
+                "zonder voorlopig toegewezen voorkeur");
     }
 
     /*

@@ -1,5 +1,6 @@
 package GUI;
 
+import Logic.StudentProposingIToewijzingsAlgoritme;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -50,7 +51,7 @@ public class ControllerInlogScherm implements Initializable {
         }
         /*
         else if(isGegevensOuderCorrect(rijksregisternummer)) {
-            ControllerDashboardOuder.setOuder(Logic.StudentProposingAlgoritme.getOuders().get(rijksregisternummer));
+            ControllerDashboardOuder.setOuder(Logic.StudentProposingIToewijzingsAlgoritme.getOuders().get(rijksregisternummer));
             Main.primaryStage.setScene(ControllerDashboardOuder.getInstance());
         }
         */
@@ -62,7 +63,7 @@ public class ControllerInlogScherm implements Initializable {
     }
 
     private boolean isGegevensOuderCorrect(String input) {
-        return Logic.StudentProposingAlgoritme.getOuders().containsKey(input);
+        return StudentProposingIToewijzingsAlgoritme.getOuders().containsKey(input);
     }
 
     @Override

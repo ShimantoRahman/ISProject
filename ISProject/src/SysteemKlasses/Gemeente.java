@@ -3,10 +3,14 @@ package SysteemKlasses;
 public class Gemeente {
     private String naam;
     private int postcode;
+    private double breedtegraad;
+    private double lengtegraad;
 
-    public Gemeente(String naam, int postcode) {
+    public Gemeente(String naam, int postcode, double breedtegraad, double lengtegraad) {
         this.naam = naam;
         this.postcode = postcode;
+        this.breedtegraad = breedtegraad;
+        this.lengtegraad = lengtegraad;
     }
 
     public String getNaam() {
@@ -23,6 +27,22 @@ public class Gemeente {
 
     public void setPostcode(int postcode) {
         this.postcode = postcode;
+    }
+
+    public double getBreedtegraad() {
+        return breedtegraad;
+    }
+
+    public void setBreedtegraad(double breedtegraad) {
+        this.breedtegraad = breedtegraad;
+    }
+
+    public double getLengtegraad() {
+        return lengtegraad;
+    }
+
+    public void setLengtegraad(double lengtegraad) {
+        this.lengtegraad = lengtegraad;
     }
 
     @Override

@@ -12,6 +12,7 @@ public class Toewijzingsaanvraag {
     private Student student;
     private Voorkeur[] voorkeuren;
     private School toegewezenSchool;
+    private boolean thuisonderwijs;
     private StatusToewijzingsaanvraag statusToewijzingsaanvraag;
 
     public Toewijzingsaanvraag(Ouder ouder) {
@@ -20,6 +21,7 @@ public class Toewijzingsaanvraag {
         this.student = null;
         this.voorkeuren = new Voorkeur[AANTAL_VOORKEUREN];
         this.toegewezenSchool = null;
+        this.thuisonderwijs = false;
         this.statusToewijzingsaanvraag = StatusToewijzingsaanvraag.Ontwerp;
         aantalAanvragen++;
     }
@@ -74,6 +76,14 @@ public class Toewijzingsaanvraag {
 
     public void setToegewezenSchool(School toegewezenSchool) {
         this.toegewezenSchool = toegewezenSchool;
+    }
+
+    public boolean isThuisonderwijs() {
+        return thuisonderwijs;
+    }
+
+    public void setThuisonderwijs(boolean thuisonderwijs) {
+        this.thuisonderwijs = thuisonderwijs;
     }
 
     public StatusToewijzingsaanvraag getStatusToewijzingsaanvraag() {
