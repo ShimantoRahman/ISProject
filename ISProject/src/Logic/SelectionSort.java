@@ -5,14 +5,14 @@ import SysteemKlasses.*;
 public class SelectionSort implements ISortingAlgoritm{
     // sorteert een array van toewijzingsaanvragen waarbij de eerste aanvraag de meest gunstig is
     // en de laatste de minst gunstig
-    public Toewijzingsaanvraag[] sort(Toewijzingsaanvraag[] aanvragen) throws ToewijzingsaanvraagException{
+    public Toewijzingsaanvraag[] sort(Toewijzingsaanvraag[] aanvragen, School school) throws ToewijzingsaanvraagException{
         for (int i = 0; i < aanvragen.length - 1; i++) {
 
             int index = i;
-            Voorkeur besteVoorkeur = getToegewezenVoorkeur(aanvragen[index]);
+            Voorkeur besteVoorkeur = getToegewezenVoorkeur(aanvragen[index], school);
 
             for (int j = i + 1; j < aanvragen.length; j++) {
-                Voorkeur voorkeur = getToegewezenVoorkeur(aanvragen[j]);
+                Voorkeur voorkeur = getToegewezenVoorkeur(aanvragen[j], school);
 
                 // beide hebben broer of zus aanwezig of beide hebben geen broer of zus aanwezig
                 // kijk naar afstand van school
@@ -61,12 +61,27 @@ public class SelectionSort implements ISortingAlgoritm{
 
     // retourneert de voorkeur waaraan de student voorlopig is toegewezen
     // zou normaal gezien altijd een waarde moeten retourneren anders gooit de method een exception
-    private static Voorkeur getToegewezenVoorkeur(Toewijzingsaanvraag aanvraag) throws ToewijzingsaanvraagException {
+    private Voorkeur getToegewezenVoorkeur(Toewijzingsaanvraag aanvraag, School school) throws ToewijzingsaanvraagException {
         for (Voorkeur voorkeur: aanvraag.getVoorkeuren()) {
             if(voorkeur.getStatus() == StatusVoorkeur.Toegewezen)
                 return voorkeur;
-        } throw new ToewijzingsaanvraagException("In methode 'getToegewezenVoorkeur' is een aanvraag meegegeven " +
-                "zonder voorlopig toegewezen voorkeur");
+        }
+        if(aanvraag.getToegewezenSchool().equals(school)) {
+            double afstand = berekenAfstand(aanvraag.getOuder(), school);
+            return new Voorkeur(school, afstand, false);
+        }
+        throw new ToewijzingsaanvraagException("In methode 'getToegewezenVoorkeur' is een aanvraag meegegeven " +
+                "zonder voorlopig toegewezen school");
+    }
+
+    private double berekenAfstand(Ouder ouder, School school) {
+        double breedtegraadOuder =  ouder.getAdres().getGemeente().getBreedtegraad();
+        double lengtegraadOuder =  ouder.getAdres().getGemeente().getLengtegraad();
+        double breedtegraadSchool =  school.getAdres().getGemeente().getBreedtegraad();
+        double lengtegraadSchool =  school.getAdres().getGemeente().getLengtegraad();
+        HaversinFormule formule = new HaversinFormule();
+        formule.setPunten(breedtegraadOuder, lengtegraadOuder, breedtegraadSchool, lengtegraadSchool);
+        return formule.getAfstand();
     }
 
     /*

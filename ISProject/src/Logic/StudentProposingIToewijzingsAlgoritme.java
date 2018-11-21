@@ -2,6 +2,7 @@ package Logic;
 
 import SysteemKlasses.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -16,12 +17,12 @@ public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgori
     private HashMap<String, Student> studenten;
     // <Toewijzingsaanvraagnummer, Toewijzingsaanvraag object>
     private HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen;
-    private HashSet<School> scholen;
+    private ArrayList<School> scholen;
     private IIndividueleProcedure individueleProcedure;
 
     public StudentProposingIToewijzingsAlgoritme(HashMap<String, Ouder> ouders, HashMap<String, Student> studenten,
                                                  HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen,
-                                                 HashSet<School> scholen, IIndividueleProcedure individueleProcedure) {
+                                                 ArrayList<School> scholen, IIndividueleProcedure individueleProcedure) {
         this.ouders = ouders;
         this.studenten = studenten;
         this.toewijzingsaanvragen = toewijzingsaanvragen;
@@ -41,7 +42,7 @@ public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgori
         return toewijzingsaanvragen;
     }
 
-    public HashSet<School> getScholen() {
+    public ArrayList<School> getScholen() {
         return scholen;
     }
 
@@ -49,12 +50,13 @@ public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgori
     public void startToewijzingsProcedure() {
         voorlopigeToewijzingAlleAanvragen();
         toewijzingsProcedureVoorElkKind();
-        // kijken of er nog kinderen zijn die nog niet zijn toegewezen en indien nodig nog eens door de procedure te gaan
-        HashMap<Integer, Toewijzingsaanvraag> nietToegewezenAanvragen = getNietToegewezenAanvragen(toewijzingsaanvragen);
-        if(toewijzingsaanvragen.size() > 0) {
-            // TODO logic
-        }
-        // TODO toewijzingsaanvragen definitief maken
+        toewijzingsProcedureVoorResterendeKinderen();
+
+
+        // toewijzingsaanvragen definitief maken
+        for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values())
+            toewijzingsaanvraag.setStatusToewijzingsaanvraag(StatusToewijzingsaanvraag.Definitief);
+
         // TODO schoolfiches aanmaken
     }
 
@@ -77,11 +79,25 @@ public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgori
             individueleProcedure.startIndividueleProcedure(toewijzingsaanvraag);
     }
 
+    private void toewijzingsProcedureVoorResterendeKinderen() {
+        // kijken of er nog kinderen zijn die nog niet zijn toegewezen en indien nodig nog eens door de procedure te gaan
+        HashMap<Integer, Toewijzingsaanvraag> nietToegewezenAanvragen;
+        while(true) {
+            nietToegewezenAanvragen = getNietToegewezenAanvragen(toewijzingsaanvragen);
+            if(nietToegewezenAanvragen.size() == 0)
+                break;
+            else {
+                for (Toewijzingsaanvraag toewijzingsaanvraag: nietToegewezenAanvragen.values())
+                    individueleProcedure.startIndividueleProcedure(toewijzingsaanvraag);
+            }
+        }
+    }
+
     // retourtneert een hashmap met alle toewijzingsaanvragen die nog geen school/thuisscholing zijn toegewezen
     private HashMap<Integer, Toewijzingsaanvraag> getNietToegewezenAanvragen(HashMap<Integer, Toewijzingsaanvraag> aanvragen) {
         HashMap<Integer, Toewijzingsaanvraag> nietToegewezenAanvragen = new HashMap<>();
         for (Toewijzingsaanvraag toewijzingsaanvraag: aanvragen.values()) {
-            if(!toewijzingsaanvraag.isThuisonderwijs() && toewijzingsaanvraag.getToegewezenSchool().equals(null))
+            if(!toewijzingsaanvraag.isThuisonderwijs() && toewijzingsaanvraag.getToegewezenSchool() == null)
                 nietToegewezenAanvragen.put(toewijzingsaanvraag.getToewijzingsaanvraagNummer(), toewijzingsaanvraag);
         } return nietToegewezenAanvragen;
     }

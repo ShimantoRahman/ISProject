@@ -59,4 +59,10 @@ public class School {
             return this.naam.equals(((School) o).naam) && this.adres.equals(((School) o).adres);
         return false;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s %s %s %s", naam, adres.getStraat(), adres.getStraatnummer(),
+                adres.getGemeente().getNaam(), adres.getGemeente().getPostcode());
+    }
 }

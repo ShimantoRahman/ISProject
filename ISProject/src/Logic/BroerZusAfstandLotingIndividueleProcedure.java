@@ -13,13 +13,13 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
     private HashMap<String, Student> studenten;
     // <Toewijzingsaanvraagnummer, Toewijzingsaanvraag object>
     private HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen;
-    private HashSet<School> scholen;
+    private ArrayList<School> scholen;
     private ISortingAlgoritm sortingAlgoritm;
     private IAfstandBerekeningFormule afstandBerekeningFormule;
 
     public BroerZusAfstandLotingIndividueleProcedure(HashMap<String, Ouder> ouders, HashMap<String, Student> studenten,
                                                      HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen,
-                                                     HashSet<School> scholen, ISortingAlgoritm sortingAlgoritm,
+                                                     ArrayList<School> scholen, ISortingAlgoritm sortingAlgoritm,
                                                      IAfstandBerekeningFormule afstandBerekeningFormule) {
         this.ouders = ouders;
         this.studenten = studenten;
@@ -34,11 +34,11 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
     public void startIndividueleProcedure(Toewijzingsaanvraag toewijzingsaanvraag) {
         Student student = toewijzingsaanvraag.getStudent();
         Voorkeur voorkeur = volgendeVoorkeursschool(toewijzingsaanvraag);
-        School school = voorkeur.getSchool();
 
         // student heeft nog een voorkeursschool die nog niet geweigerd is
         if(voorkeur != null) {
             // kijkt of er genoeg of te weinig plaatsen zijn op de voorkeursschool en voert toepasselijke code toe
+            School school = voorkeur.getSchool();
             analyzePlaatsenSchool(toewijzingsaanvraag, voorkeur, school, student);
         }
 
@@ -77,7 +77,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
             Toewijzingsaanvraag[] aanvragen = getToewijzingsaanvragenAanSchool(school);
 
             // rangschik alle studenten
-            sortingAlgoritm.sort(aanvragen);
+            sortingAlgoritm.sort(aanvragen, school);
 
             // zet de statusVoorkeur van alle studenten die gunstig gerangschikt zijn op toegewezen
             // zet hun toegewezen school op deze school
@@ -144,9 +144,10 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
 
     // retourneert of een school genoeg plaatsen heeft
     private boolean heeftGenoegPlaatsen(School school) {
-        return school.getAantalPlaatsen() >= getStudentenOpSchool(school).size();
+        return school.getAantalPlaatsen() >= school.getStudenten().size();
     }
 
+    /*
     // retourneert een arraylist met alle studenten op die school
     private ArrayList<Student> getStudentenOpSchool(School school) {
         ArrayList<Student> studenten = new ArrayList<>();
@@ -155,6 +156,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
                 studenten.add(toewijzingsaanvraag.getStudent());
         } return studenten;
     }
+    */
 
     // retourneert een arraylist met alle toewijzingsaanvragen die toegewezen zijn aan die school
     private Toewijzingsaanvraag[] getToewijzingsaanvragenAanSchool(School school) {

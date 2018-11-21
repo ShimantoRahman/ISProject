@@ -114,10 +114,4 @@ public class Toewijzingsaanvraag {
             return this.toewijzingsaanvraagNummer == ((Toewijzingsaanvraag) o).toewijzingsaanvraagNummer;
         return false;
     }
-
-    @Override
-    public String toString() {
-        //code voor weergave overzicht toewijzingsaanvraag
-        return null;
-    }
 }
