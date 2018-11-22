@@ -4,7 +4,6 @@ import SysteemKlasses.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class BroerZusAfstandLotingIndividueleProcedure implements IIndividueleProcedure{
     // <Rijksregisternummer, Ouder object>
@@ -128,7 +127,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
         //indien er geen vrije scholen meer zijn
         else {
             // thuisonderwijs
-            toewijzingsaanvraag.setThuisonderwijs(true);
+            toewijzingsaanvraag.setThuisscholingToegewezen(true);
             toewijzingsaanvraag.setToegewezenSchool(null);
         }
     }

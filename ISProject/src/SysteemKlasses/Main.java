@@ -114,7 +114,7 @@ public class Main extends Application {
                             "Student naam: %s %s\nToegewezen school: %s\nThuisonderwijs: %s\n",
                     ta.getToewijzingsaanvraagNummer(), ta.getOuder().getVoornaam(), ta.getOuder().getNaam(),
                     ta.getStudent().getVoornaam(), ta.getStudent().getNaam(), ta.getToegewezenSchool(),
-                    ta.isThuisonderwijs()));
+                    ta.isThuisscholingToegewezen()));
         }
 
         // programma afsluiten

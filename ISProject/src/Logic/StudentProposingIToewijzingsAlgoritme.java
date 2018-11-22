@@ -4,7 +4,6 @@ import SysteemKlasses.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 // TODO test scenario's schrijven en debuggen
 // TODO ToewijzingsaanvraagExceptions gooien bij (in theorie) onmogelijke situaties voor debuggen makkelijker te maken
@@ -97,7 +96,7 @@ public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgori
     private HashMap<Integer, Toewijzingsaanvraag> getNietToegewezenAanvragen(HashMap<Integer, Toewijzingsaanvraag> aanvragen) {
         HashMap<Integer, Toewijzingsaanvraag> nietToegewezenAanvragen = new HashMap<>();
         for (Toewijzingsaanvraag toewijzingsaanvraag: aanvragen.values()) {
-            if(!toewijzingsaanvraag.isThuisonderwijs() && toewijzingsaanvraag.getToegewezenSchool() == null)
+            if(!toewijzingsaanvraag.isThuisscholingToegewezen() && toewijzingsaanvraag.getToegewezenSchool() == null)
                 nietToegewezenAanvragen.put(toewijzingsaanvraag.getToewijzingsaanvraagNummer(), toewijzingsaanvraag);
         } return nietToegewezenAanvragen;
     }

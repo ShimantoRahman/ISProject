@@ -16,6 +16,13 @@ public class Voorkeur {
         this.status = StatusVoorkeur.Undefined;
     }
 
+    public Voorkeur(School school, double afstand, boolean broerOfZusAanwezig, StatusVoorkeur status) {
+        this.school = school;
+        this.afstand = afstand;
+        this.broerOfZusAanwezig = broerOfZusAanwezig;
+        this.status = status;
+    }
+
     public School getSchool() {
         return school;
     }

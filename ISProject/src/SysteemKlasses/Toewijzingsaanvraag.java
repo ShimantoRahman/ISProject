@@ -12,7 +12,7 @@ public class Toewijzingsaanvraag {
     private Student student;
     private Voorkeur[] voorkeuren;
     private School toegewezenSchool;
-    private boolean thuisonderwijs;
+    private boolean thuisscholingToegewezen;
     private StatusToewijzingsaanvraag statusToewijzingsaanvraag;
 
     public Toewijzingsaanvraag(Ouder ouder) {
@@ -21,9 +21,30 @@ public class Toewijzingsaanvraag {
         this.student = null;
         this.voorkeuren = new Voorkeur[AANTAL_VOORKEUREN];
         this.toegewezenSchool = null;
-        this.thuisonderwijs = false;
+        this.thuisscholingToegewezen = false;
         this.statusToewijzingsaanvraag = StatusToewijzingsaanvraag.Ontwerp;
         aantalAanvragen++;
+    }
+
+    public Toewijzingsaanvraag(int toewijzingsaanvraagNummer, Ouder ouder, Student student, Voorkeur[] voorkeuren,
+                               StatusToewijzingsaanvraag statusToewijzingsaanvraag) {
+        this.toewijzingsaanvraagNummer = toewijzingsaanvraagNummer;
+        this.ouder = ouder;
+        this.student = student;
+        this.voorkeuren = voorkeuren;
+        this.statusToewijzingsaanvraag = statusToewijzingsaanvraag;
+    }
+
+    public Toewijzingsaanvraag(int toewijzingsaanvraagNummer, Ouder ouder, Student student, Voorkeur[] voorkeuren,
+                               School toegewezenSchool, boolean thuisscholingToegewezen,
+                               StatusToewijzingsaanvraag statusToewijzingsaanvraag) {
+        this.toewijzingsaanvraagNummer = toewijzingsaanvraagNummer;
+        this.ouder = ouder;
+        this.student = student;
+        this.voorkeuren = voorkeuren;
+        this.toegewezenSchool = toegewezenSchool;
+        this.thuisscholingToegewezen = thuisscholingToegewezen;
+        this.statusToewijzingsaanvraag = statusToewijzingsaanvraag;
     }
 
     public static int getAantalVoorkeuren() {
@@ -78,12 +99,12 @@ public class Toewijzingsaanvraag {
         this.toegewezenSchool = toegewezenSchool;
     }
 
-    public boolean isThuisonderwijs() {
-        return thuisonderwijs;
+    public boolean isThuisscholingToegewezen() {
+        return thuisscholingToegewezen;
     }
 
-    public void setThuisonderwijs(boolean thuisonderwijs) {
-        this.thuisonderwijs = thuisonderwijs;
+    public void setThuisscholingToegewezen(boolean thuisscholingToegewezen) {
+        this.thuisscholingToegewezen = thuisscholingToegewezen;
     }
 
     public StatusToewijzingsaanvraag getStatusToewijzingsaanvraag() {
