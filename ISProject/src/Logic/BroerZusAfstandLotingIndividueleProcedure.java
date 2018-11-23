@@ -50,7 +50,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
 
     private void analyzePlaatsenSchool(Toewijzingsaanvraag toewijzingsaanvraag, Voorkeur voorkeur, School school, Student student) {
         // zet school als voorlopig toegewezen school bij student
-        toewijzingsaanvraag.setToegewezenSchool(school);
+        toewijzingsaanvraag.getStudent().setToegewezenSchool(school);
         // zet student bij de voorlopig toegewezen studenten van die school
         school.getStudenten().put(student.getRijksregisterNummer(), student);
 
@@ -65,7 +65,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
         // zet de student bij de haspmap toegewezen studenten bij de school
         else {
             voorkeur.setStatus(StatusVoorkeur.Toegewezen);
-            toewijzingsaanvraag.setToegewezenSchool(school);
+            toewijzingsaanvraag.getStudent().setToegewezenSchool(school);
             school.getStudenten().put(student.getRijksregisterNummer(), student);
         }
     }
@@ -86,7 +86,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
                 if(index < 0)
                     throw new ToewijzingsaanvraagException("Voorkeursschool niet gevonden in de voorkeuren");
                 aanvragen[i].getVoorkeuren()[index].setStatus(StatusVoorkeur.Toegewezen);
-                aanvragen[i].setToegewezenSchool(school);
+                aanvragen[i].getStudent().setToegewezenSchool(school);
                 Student tempStudent = aanvragen[i].getStudent();
                 school.getStudenten().put(tempStudent.getRijksregisterNummer(), tempStudent);
             }
@@ -99,7 +99,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
                 if(index < 0)
                     throw new ToewijzingsaanvraagException("Voorkeursschool niet gevonden in de voorkeuren");
                 aanvragen[i].getVoorkeuren()[index].setStatus(StatusVoorkeur.Geweigerd);
-                aanvragen[i].setToegewezenSchool(null);
+                aanvragen[i].getStudent().setToegewezenSchool(null);
                 school.getStudenten().remove(aanvragen[i].getStudent().getRijksregisterNummer());
             }
 
@@ -120,7 +120,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
             School dichtsteSchool = vindDichtsteSchool(vrijeScholen, toewijzingsaanvraag);
 
             // wijs de student toe tot deze school
-            toewijzingsaanvraag.setToegewezenSchool(dichtsteSchool);
+            toewijzingsaanvraag.getStudent().setToegewezenSchool(dichtsteSchool);
             dichtsteSchool.getStudenten().put(student.getRijksregisterNummer(), student);
         }
 
@@ -128,7 +128,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
         else {
             // thuisonderwijs
             toewijzingsaanvraag.setThuisscholingToegewezen(true);
-            toewijzingsaanvraag.setToegewezenSchool(null);
+            toewijzingsaanvraag.getStudent().setToegewezenSchool(null);
         }
     }
 
@@ -161,7 +161,7 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
     private Toewijzingsaanvraag[] getToewijzingsaanvragenAanSchool(School school) {
         ArrayList<Toewijzingsaanvraag> aanvragen = new ArrayList<>();
         for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values()) {
-            if(toewijzingsaanvraag.getToegewezenSchool().equals(school))
+            if(toewijzingsaanvraag.getStudent().getToegewezenSchool().equals(school))
                 aanvragen.add(toewijzingsaanvraag);
         } return aanvragen.toArray(new Toewijzingsaanvraag[aanvragen.size()]);
     }

@@ -113,7 +113,7 @@ public class Main extends Application {
             System.out.println(String.format("toewijzingsaanvraagnummer: %d\nOuder naam: %s %s\n" +
                             "Student naam: %s %s\nToegewezen school: %s\nThuisonderwijs: %s\n",
                     ta.getToewijzingsaanvraagNummer(), ta.getOuder().getVoornaam(), ta.getOuder().getNaam(),
-                    ta.getStudent().getVoornaam(), ta.getStudent().getNaam(), ta.getToegewezenSchool(),
+                    ta.getStudent().getVoornaam(), ta.getStudent().getNaam(), ta.getStudent().getToegewezenSchool(),
                     ta.isThuisscholingToegewezen()));
         }
 

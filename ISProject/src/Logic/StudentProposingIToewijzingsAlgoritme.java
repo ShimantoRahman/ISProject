@@ -65,7 +65,7 @@ public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgori
         for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values()) {
             toewijzingsaanvraag.setStatusToewijzingsaanvraag(StatusToewijzingsaanvraag.Voorlopig);
             // eerste voorkeursschool
-            toewijzingsaanvraag.setToegewezenSchool(toewijzingsaanvraag.getVoorkeuren()[0].getSchool());
+            toewijzingsaanvraag.getStudent().setToegewezenSchool(toewijzingsaanvraag.getVoorkeuren()[0].getSchool());
             toewijzingsaanvraag.getVoorkeuren()[0].setStatus(StatusVoorkeur.Toegewezen);
             toewijzingsaanvraag.getVoorkeuren()[0].getSchool().getStudenten()
                     .put(toewijzingsaanvraag.getStudent().getRijksregisterNummer(), toewijzingsaanvraag.getStudent());
@@ -93,10 +93,12 @@ public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgori
     }
 
     // retourtneert een hashmap met alle toewijzingsaanvragen die nog geen school/thuisscholing zijn toegewezen
-    private HashMap<Integer, Toewijzingsaanvraag> getNietToegewezenAanvragen(HashMap<Integer, Toewijzingsaanvraag> aanvragen) {
+    private HashMap<Integer, Toewijzingsaanvraag> getNietToegewezenAanvragen
+    (HashMap<Integer, Toewijzingsaanvraag> aanvragen) {
         HashMap<Integer, Toewijzingsaanvraag> nietToegewezenAanvragen = new HashMap<>();
         for (Toewijzingsaanvraag toewijzingsaanvraag: aanvragen.values()) {
-            if(!toewijzingsaanvraag.isThuisscholingToegewezen() && toewijzingsaanvraag.getToegewezenSchool() == null)
+            if(!toewijzingsaanvraag.isThuisscholingToegewezen()
+                    && toewijzingsaanvraag.getStudent().getToegewezenSchool() == null)
                 nietToegewezenAanvragen.put(toewijzingsaanvraag.getToewijzingsaanvraagNummer(), toewijzingsaanvraag);
         } return nietToegewezenAanvragen;
     }

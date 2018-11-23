@@ -66,7 +66,7 @@ public class SelectionSort implements ISortingAlgoritm{
             if(voorkeur.getStatus() == StatusVoorkeur.Toegewezen)
                 return voorkeur;
         }
-        if(aanvraag.getToegewezenSchool().equals(school)) {
+        if(aanvraag.getStudent().getToegewezenSchool().equals(school)) {
             double afstand = berekenAfstand(aanvraag.getOuder(), school);
             return new Voorkeur(school, afstand, false);
         }
