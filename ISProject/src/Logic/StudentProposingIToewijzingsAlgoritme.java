@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 // TODO test scenario's schrijven en debuggen
 // TODO ToewijzingsaanvraagExceptions gooien bij (in theorie) onmogelijke situaties voor debuggen makkelijker te maken
-// TODO refactoring
 
 public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgoritme {
     // <Rijksregisternummer, Ouder object>
@@ -55,8 +54,6 @@ public class StudentProposingIToewijzingsAlgoritme implements IToewijzingsAlgori
         // toewijzingsaanvragen definitief maken
         for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values())
             toewijzingsaanvraag.setStatusToewijzingsaanvraag(StatusToewijzingsaanvraag.Definitief);
-
-        // TODO schoolfiches aanmaken
     }
 
     // Zet de status van alle toewijzingsaanvragen op voorlopig

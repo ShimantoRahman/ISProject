@@ -1,14 +1,9 @@
 package SysteemKlasses;
 
-//import java.util.HashMap;
-
 public class Student extends Persoon {
     private String phoneNumber;
     private Ouder ouder;
     private School toegewezenSchool;
-    //hashmap/map gebruiken voor voorkeursscholen te linken met boolean broer of zus aanwezig op die school?
-    //private HashMap<School, Boolean> broersEnZussenOpScholen;
-    //private HashMap<School, Double> afstandTotScholen;
 
     public Student() {
         this("","","","");

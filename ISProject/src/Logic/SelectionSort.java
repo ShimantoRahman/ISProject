@@ -3,6 +3,12 @@ package Logic;
 import SysteemKlasses.*;
 
 public class SelectionSort implements ISortingAlgoritm{
+    private IAfstandBerekeningFormule afstandBerekeningFormule;
+
+    public SelectionSort(IAfstandBerekeningFormule afstandBerekeningFormule) {
+        this.afstandBerekeningFormule = afstandBerekeningFormule;
+    }
+
     // sorteert een array van toewijzingsaanvragen waarbij de eerste aanvraag de meest gunstig is
     // en de laatste de minst gunstig
     public Toewijzingsaanvraag[] sort(Toewijzingsaanvraag[] aanvragen, School school) throws ToewijzingsaanvraagException{
@@ -79,40 +85,7 @@ public class SelectionSort implements ISortingAlgoritm{
         double lengtegraadOuder =  ouder.getAdres().getGemeente().getLengtegraad();
         double breedtegraadSchool =  school.getAdres().getGemeente().getBreedtegraad();
         double lengtegraadSchool =  school.getAdres().getGemeente().getLengtegraad();
-        HaversinFormule formule = new HaversinFormule();
-        formule.setPunten(breedtegraadOuder, lengtegraadOuder, breedtegraadSchool, lengtegraadSchool);
-        return formule.getAfstand();
-    }
-
-    /*
-
-    selection sort voorbeeld
-
-    public static int[] doSelectionSort(int[] arr){
-
-        for (int i = 0; i < arr.length - 1; i++) {
-            int index = i;
-            for (int j = i + 1; j < arr.length; j++)
-                if (arr[j] < arr[index])
-                    index = j;
-
-            int smallerNumber = arr[index];
-            arr[index] = arr[i];
-            arr[i] = smallerNumber;
-        }
-        return arr;
-    }
-    */
-    public static void main(String a[]){
-        /*
-        int[] arr1 = {10,34,2,56,7,67,88,42};
-        int[] arr2 = doSelectionSort(arr1);
-        for(int i:arr2){
-            System.out.print(i);
-            System.out.print(", ");
-        }
-        */
-
-        //Toewijzingsaanvraag toewijzingsaanvraag1 = new Toewijzingsaanvraag();
+        afstandBerekeningFormule.setPunten(breedtegraadOuder, lengtegraadOuder, breedtegraadSchool, lengtegraadSchool);
+        return afstandBerekeningFormule.getAfstand();
     }
 }

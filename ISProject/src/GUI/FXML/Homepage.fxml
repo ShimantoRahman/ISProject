@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="500.0" spacing="5.0" styleClass="general" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.ControllerHomepage">
+   <children>
+      <HBox styleClass="tf_box">
+         <children>
+            <Label fx:id="welkomLbl" styleClass="header" text="Welkom, naam voornaam" textFill="#00a2d3" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </VBox.margin>
+      </HBox>
+      <Label style="-fx-font-size: 14;" text="U kan in de applicatie:">
+         <VBox.margin>
+            <Insets left="15.0" />
+         </VBox.margin>
+      </Label>
+      <Label style="-fx-font-size: 14;" text="• Een nieuwe aanvraag registreren voor uw kind(eren)">
+         <VBox.margin>
+            <Insets left="25.0" />
+         </VBox.margin>
+      </Label>
+      <Label style="-fx-font-size: 14;" text="• Een fiche van een bepaalde school bekijken">
+         <VBox.margin>
+            <Insets left="25.0" />
+         </VBox.margin>
+      </Label>
+      <Label layoutX="173.0" layoutY="287.0" style="-fx-font-size: 14;" text="• Een overzicht van uw aanvragen bekijken">
+         <VBox.margin>
+            <Insets left="25.0" />
+         </VBox.margin>
+      </Label>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</VBox>

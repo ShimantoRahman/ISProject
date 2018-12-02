@@ -1,3 +1,14 @@
+.general{
+    -fx-font-family: Calibri Light;
+}
+.header{
+    -fx-font-family: Calibri;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+.subheader{
+    -fx-font-style: italic;
+}
 .parent{
     -fx-background-color: #fff;
 }

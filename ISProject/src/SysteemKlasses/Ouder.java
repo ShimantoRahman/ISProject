@@ -1,11 +1,8 @@
 package SysteemKlasses;
 
-//import java.util.Set;
-
 public class Ouder extends Persoon {
     private String emailAdres;
     private Adres adres;
-    //private Set<Student> kinderen;
 
     public Ouder() {
         this("","","","",null);

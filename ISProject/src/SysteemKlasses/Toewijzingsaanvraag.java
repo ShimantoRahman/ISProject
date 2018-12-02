@@ -123,4 +123,9 @@ public class Toewijzingsaanvraag {
             return this.toewijzingsaanvraagNummer == ((Toewijzingsaanvraag) o).toewijzingsaanvraagNummer;
         return false;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", student.getNaam(), student.getVoornaam());
+    }
 }

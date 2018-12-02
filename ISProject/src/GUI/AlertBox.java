@@ -44,8 +44,5 @@ public class AlertBox {
         scene = new Scene(layout);
 
         window.setScene(scene);
-
     }
-
-
 }

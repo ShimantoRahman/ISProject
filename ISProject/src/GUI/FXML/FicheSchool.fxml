@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="500.0" styleClass="general" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.ControllerFicheSchool">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="45.0">
+         <children>
+            <ChoiceBox fx:id="scholenChoicebox" prefWidth="450.0" styleClass="choicebox" />
+            <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="310.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#toonFicheBtnPressed" prefHeight="40.0" prefWidth="90.0" styleClass="blue-btns-black" text="Toon fiche">
+                     <font>
+                        <Font name="Calibri Light" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="15.0" top="15.0" />
+         </VBox.margin>
+      </HBox>
+      <VBox fx:id="ficheFrame" prefHeight="455.0" prefWidth="460.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../vlaanderen_verbeelding_werkt.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="datumLbl" text="Datum">
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <Label style="-fx-font-family: Calibri; -fx-font-weight: bold; -fx-font-size: 20px;" text="School Fiche" underline="true">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label styleClass="subheader" text="Algemene gegevens">
+               <font>
+                  <Font name="Calibri Light Italic" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <VBox>
+               <children>
+                  <HBox spacing="15.0">
+                     <children>
+                        <Label text="• Naam school:" />
+                        <Label fx:id="naamLbl" text="naam" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                     <children>
+                        <Label text="• Adres:" />
+                     </children>
+                  </HBox>
+                  <VBox>
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label text="■ Straat: ">
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="straatLbl" text="straat" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox layoutX="25.0" layoutY="10.0">
+                           <children>
+                              <Label text="■ Huisnummer: ">
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="huisnummerLbl" text="huisnummer" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="27.0">
+                           <children>
+                              <Label text="■ Postcode: ">
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="postcodeLbl" text="postcode" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="44.0">
+                           <children>
+                              <Label text="■ Gemeente: ">
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="gemeenteLbl" text="gemeente" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                     <children>
+                        <Label text="• Aantal plaatsen:" />
+                        <Label fx:id="aantalPlaatsenLbl" text="aantal plaatsen" />
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="15.0" top="10.0" />
+               </VBox.margin>
+            </VBox>
+            <Label styleClass="subheader" text="Toegewezen studenten">
+               <font>
+                  <Font name="Calibri Light Italic" size="12.0" />
+               </font>
+            </Label>
+            <ScrollPane prefHeight="350.0">
+               <content>
+                  <VBox fx:id="toegewezenStudentenBox" prefWidth="450.0" />
+               </content>
+            </ScrollPane>
+         </children>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </VBox>
+   </children>
+   <padding>
+      <Insets left="20.0" right="20.0" />
+   </padding>
+</VBox>

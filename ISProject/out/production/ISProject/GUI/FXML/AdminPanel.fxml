@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" spacing="20.0" styleClass="parent" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.ControllerAdminPanel">
+   <children>
+      <HBox>
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../vlaanderen_verbeelding_werkt.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <Button mnemonicParsing="false" onAction="#StartToewijzingsprocedurePressed" prefHeight="40.0" prefWidth="250.0" styleClass="blue-btns-black" text="Start toewijzingsprocedure">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font></Button>
+      <HBox alignment="BOTTOM_LEFT">
+         <children>
+            <Button mnemonicParsing="false" onAction="#logUitBtnPressed" prefHeight="40.0" prefWidth="120.0" styleClass="blue-btns-black" text="Log uit">
+               <font>
+                  <Font name="Calibri Light" size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</VBox>

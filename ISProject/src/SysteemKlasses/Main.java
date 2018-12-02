@@ -1,14 +1,19 @@
 package SysteemKlasses;
 
-import GUI.ControllerInlogScherm;
+import GUI.Controllers.ControllerAdminLoginIn;
+import GUI.Controllers.ControllerDashboard;
+import GUI.Controllers.ControllerInlogScherm;
 import Logic.*;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main extends Application {
+
     private static Stage primaryStage;
     private static HashMap<String, Student> studenten;
     private static HashMap<String, Ouder> ouders;
@@ -70,16 +75,56 @@ public class Main extends Application {
         scholen = new ArrayList<>();
 
         //testScenario();
+        testdata();
 
-        // start GUI
-        this.primaryStage = primaryStage;
-        //Parent root = FXMLLoader.load(getClass().getResource("InlogScherm.fxml"));
+        // algoritme
+        IAfstandBerekeningFormule afstandBerekeningFormule = new HaversinFormule();
+        ISortingAlgoritm sortingAlgoritm = new SelectionSort(afstandBerekeningFormule);
+        IIndividueleProcedure individueleProcedure =
+                new BroerZusAfstandLotingIndividueleProcedure(ouders, studenten, toewijzingsaanvragen, scholen,
+                        sortingAlgoritm, afstandBerekeningFormule);
+        IToewijzingsAlgoritme toewijzingsAlgoritme =
+                new StudentProposingIToewijzingsAlgoritme(ouders, studenten, toewijzingsaanvragen, scholen,
+                        individueleProcedure);
+
+        // GUI
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXML/InlogScherm.fxml"));
+        Scene scene = new Scene(loader.load());
+        primaryStage.setScene(scene);
+        ControllerInlogScherm controllerInlogScherm = loader.getController();
+        controllerInlogScherm.setWaarden(primaryStage, studenten, ouders, toewijzingsaanvragen, scholen);
+        controllerInlogScherm.setScene(scene);
+
+
+        loader = new FXMLLoader(getClass().getResource("/GUI/FXML/Dashboard.fxml"));
+        scene = new Scene(loader.load());
+        ControllerDashboard controllerDashboard = loader.getController();
+        controllerDashboard.setScene(scene);
+        controllerDashboard.setWaarden(primaryStage, studenten, ouders, toewijzingsaanvragen, scholen,
+                afstandBerekeningFormule);
+
+        loader = new FXMLLoader(getClass().getResource("/GUI/FXML/AdminLogIn.fxml"));
+        scene = new Scene(loader.load());
+        ControllerAdminLoginIn controllerAdminLoginIn = loader.getController();
+        controllerAdminLoginIn.setScene(scene);
+        controllerAdminLoginIn.setPrimaryStage(primaryStage);
+
+        controllerInlogScherm.setDashboard(controllerDashboard);
+        controllerInlogScherm.setAdminLoginIn(controllerAdminLoginIn);
+        controllerDashboard.setInlogScherm(controllerInlogScherm);
+        controllerAdminLoginIn.setInlogScherm(controllerInlogScherm);
+
+        controllerAdminLoginIn.getAdminPanel().setToewijzingsAlgoritme(toewijzingsAlgoritme);
+        controllerAdminLoginIn.getAdminPanel().setAdminLoginIn(controllerAdminLoginIn);
+
         primaryStage.setTitle("Toewijzingsaanvraag");
         primaryStage.setResizable(false);
-        //primaryStage.setScene(new Scene(root));
-        primaryStage.setScene(ControllerInlogScherm.getScene());
+        primaryStage.setOnCloseRequest(event -> {
+            //TODO schrijf alle data weg naar de database
+            primaryStage.close();
+        });
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
@@ -100,22 +145,7 @@ public class Main extends Application {
         // testdata
         testdata();
 
-        // algoritme
-        ISortingAlgoritm sortingAlgoritm = new SelectionSort();
-        IAfstandBerekeningFormule afstandBerekeningFormule = new HaversinFormule();
-        IIndividueleProcedure individueleProcedure = new BroerZusAfstandLotingIndividueleProcedure(ouders, studenten, toewijzingsaanvragen, scholen, sortingAlgoritm, afstandBerekeningFormule);
-        IToewijzingsAlgoritme toewijzingsAlgoritme = new StudentProposingIToewijzingsAlgoritme(ouders, studenten, toewijzingsaanvragen, scholen, individueleProcedure);
-        toewijzingsAlgoritme.startToewijzingsProcedure();
-
-        System.out.println("");
-
-        for (Toewijzingsaanvraag ta: toewijzingsaanvragen.values()) {
-            System.out.println(String.format("toewijzingsaanvraagnummer: %d\nOuder naam: %s %s\n" +
-                            "Student naam: %s %s\nToegewezen school: %s\nThuisonderwijs: %s\n",
-                    ta.getToewijzingsaanvraagNummer(), ta.getOuder().getVoornaam(), ta.getOuder().getNaam(),
-                    ta.getStudent().getVoornaam(), ta.getStudent().getNaam(), ta.getStudent().getToegewezenSchool(),
-                    ta.isThuisscholingToegewezen()));
-        }
+        printToewijzingsaanvragen();
 
         // programma afsluiten
         System.exit(0);
@@ -283,5 +313,17 @@ public class Main extends Application {
         toewijzingsaanvragen.put(aanvraag7.getToewijzingsaanvraagNummer(), aanvraag7);
 
         System.out.println("Aanvragen gemaakt en toegevoegd");
+    }
+
+    public static void printToewijzingsaanvragen() {
+        System.out.println("");
+
+        for (Toewijzingsaanvraag ta: toewijzingsaanvragen.values()) {
+            System.out.println(String.format("toewijzingsaanvraagnummer: %d\nOuder naam: %s %s\n" +
+                            "Student naam: %s %s\nToegewezen school: %s\nThuisonderwijs: %s\n",
+                    ta.getToewijzingsaanvraagNummer(), ta.getOuder().getVoornaam(), ta.getOuder().getNaam(),
+                    ta.getStudent().getVoornaam(), ta.getStudent().getNaam(), ta.getStudent().getToegewezenSchool(),
+                    ta.isThuisscholingToegewezen()));
+        }
     }
 }
