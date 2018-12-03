@@ -18,30 +18,38 @@ import java.util.ResourceBundle;
 
 public class ControllerFicheSchool implements Initializable {
 
+    // FXML variabelen
     @FXML
-    ChoiceBox<School> scholenChoicebox;
+    private ChoiceBox<School> scholenChoicebox;
     @FXML
-    Label datumLbl;
+    private Label datumLbl;
     @FXML
-    VBox ficheFrame;
+    private VBox ficheFrame;
     @FXML
-    Label naamLbl;
+    private Label naamLbl;
     @FXML
-    Label straatLbl;
+    private Label straatLbl;
     @FXML
-    Label huisnummerLbl;
+    private Label huisnummerLbl;
     @FXML
-    Label postcodeLbl;
+    private Label postcodeLbl;
     @FXML
-    Label gemeenteLbl;
+    private Label gemeenteLbl;
     @FXML
-    Label aantalPlaatsenLbl;
+    private Label aantalPlaatsenLbl;
     @FXML
-    VBox toegewezenStudentenBox;
+    private VBox toegewezenStudentenBox;
 
+    // instantie variabelen
     private Parent elementen;
     private ArrayList<School> scholen;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ficheFrame.setVisible(false);
+    }
+
+    // getters & setters
     public Parent getElementen() {
         return elementen;
     }
@@ -56,6 +64,7 @@ public class ControllerFicheSchool implements Initializable {
             scholenChoicebox.getItems().add(school);
     }
 
+    // event handlers
     public void toonFicheBtnPressed() {
         // pak de geselecteerde school
         School selectedSchool = scholenChoicebox.getSelectionModel().getSelectedItem();
@@ -72,11 +81,13 @@ public class ControllerFicheSchool implements Initializable {
         }
     }
 
+    // andere public methoden
     public void reset() {
         ficheFrame.setVisible(false);
         scholenChoicebox.getSelectionModel().select(null);
     }
 
+    // private hulpmethoden
     private void vulFiche(School school) {
         naamLbl.setText(school.getNaam());
         straatLbl.setText(school.getAdres().getStraat());
@@ -107,8 +118,5 @@ public class ControllerFicheSchool implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        ficheFrame.setVisible(false);
-    }
+
 }

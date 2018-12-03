@@ -36,7 +36,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="400.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#terugBtnPressed" prefHeight="40.0" prefWidth="120.0" styleClass="blue-btns-black" text="Terug" textFill="WHITE">
+                  <Button fx:id="terugBtn" mnemonicParsing="false" onAction="#terugBtnPressed" prefHeight="40.0" prefWidth="120.0" styleClass="blue-btns-black" text="Terug" textFill="WHITE">
                      <font>
                         <Font name="Calibri Light" size="18.0" />
                      </font>
@@ -48,7 +48,7 @@
             </HBox>
               <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="404.0">
                   <children>
-                      <Button mnemonicParsing="false" onAction="#logInBtnPressed" prefHeight="40.0" prefWidth="120.0" styleClass="blue-btns-black" text="Log in" textFill="WHITE">
+                      <Button fx:id="logInBtn" mnemonicParsing="false" onAction="#logInBtnPressed" prefHeight="40.0" prefWidth="120.0" styleClass="blue-btns-black" text="Log in" textFill="WHITE">
                           <font>
                               <Font name="Calibri Light" size="18.0" />
                           </font>

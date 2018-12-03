@@ -11,12 +11,20 @@ import java.util.ResourceBundle;
 
 public class ControllerHomepage implements Initializable {
 
+    // FXML variabelen
     @FXML
-    Label welkomLbl;
+    private Label welkomLbl;
 
+    // instantie variabelen
     private Parent elementen;
     private Ouder ouder;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    // getters & setters
     public Parent getElementen() {
         return elementen;
     }
@@ -28,10 +36,5 @@ public class ControllerHomepage implements Initializable {
     public void setOuder(Ouder ouder) {
         this.ouder = ouder;
         welkomLbl.setText(String.format("Welkom, %s %s", ouder.getNaam(), ouder.getVoornaam()));
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 }

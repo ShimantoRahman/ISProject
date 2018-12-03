@@ -2,7 +2,7 @@ package SysteemKlasses;
 
 import GUI.Controllers.ControllerAdminLoginIn;
 import GUI.Controllers.ControllerDashboard;
-import GUI.Controllers.ControllerInlogScherm;
+import GUI.Controllers.ControllerUserLogIn;
 import Logic.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -84,17 +84,17 @@ public class Main extends Application {
                 new BroerZusAfstandLotingIndividueleProcedure(ouders, studenten, toewijzingsaanvragen, scholen,
                         sortingAlgoritm, afstandBerekeningFormule);
         IToewijzingsAlgoritme toewijzingsAlgoritme =
-                new StudentProposingIToewijzingsAlgoritme(ouders, studenten, toewijzingsaanvragen, scholen,
+                new StudentProposingToewijzingsAlgoritme(ouders, studenten, toewijzingsaanvragen, scholen,
                         individueleProcedure);
 
         // GUI
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXML/InlogScherm.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXML/UserLogIn.fxml"));
         Scene scene = new Scene(loader.load());
         primaryStage.setScene(scene);
-        ControllerInlogScherm controllerInlogScherm = loader.getController();
-        controllerInlogScherm.setWaarden(primaryStage, studenten, ouders, toewijzingsaanvragen, scholen);
-        controllerInlogScherm.setScene(scene);
+        ControllerUserLogIn controllerUserLogIn = loader.getController();
+        controllerUserLogIn.setWaarden(primaryStage, studenten, ouders, toewijzingsaanvragen, scholen);
+        controllerUserLogIn.setScene(scene);
 
 
         loader = new FXMLLoader(getClass().getResource("/GUI/FXML/Dashboard.fxml"));
@@ -110,10 +110,10 @@ public class Main extends Application {
         controllerAdminLoginIn.setScene(scene);
         controllerAdminLoginIn.setPrimaryStage(primaryStage);
 
-        controllerInlogScherm.setDashboard(controllerDashboard);
-        controllerInlogScherm.setAdminLoginIn(controllerAdminLoginIn);
-        controllerDashboard.setInlogScherm(controllerInlogScherm);
-        controllerAdminLoginIn.setInlogScherm(controllerInlogScherm);
+        controllerUserLogIn.setDashboard(controllerDashboard);
+        controllerUserLogIn.setAdminLoginIn(controllerAdminLoginIn);
+        controllerDashboard.setUserLogIn(controllerUserLogIn);
+        controllerAdminLoginIn.setUserLogIn(controllerUserLogIn);
 
         controllerAdminLoginIn.getAdminPanel().setToewijzingsAlgoritme(toewijzingsAlgoritme);
         controllerAdminLoginIn.getAdminPanel().setAdminLoginIn(controllerAdminLoginIn);

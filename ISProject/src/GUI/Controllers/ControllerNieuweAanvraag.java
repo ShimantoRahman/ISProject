@@ -21,21 +21,23 @@ import java.util.ResourceBundle;
 
 public class ControllerNieuweAanvraag implements Initializable {
 
+    // FXML variabelen
     @FXML
-    TextField RRNummerTxt;
+    private TextField RRNummerTxt;
     @FXML
-    ChoiceBox<School> eersteKeuzeBox;
+    private ChoiceBox<School> eersteKeuzeBox;
     @FXML
-    ChoiceBox<School> tweedeKeuzeBox;
+    private ChoiceBox<School> tweedeKeuzeBox;
     @FXML
-    ChoiceBox<School> derdeKeuzeBox;
+    private ChoiceBox<School> derdeKeuzeBox;
     @FXML
-    CheckBox eersteKeuzeCheckbox;
+    private CheckBox eersteKeuzeCheckbox;
     @FXML
-    CheckBox tweedeKeuzeCheckbox;
+    private CheckBox tweedeKeuzeCheckbox;
     @FXML
-    CheckBox derdeKeuzeCheckbox;
+    private CheckBox derdeKeuzeCheckbox;
 
+    // instantie variabelen
     private Parent elementen;
     private Ouder ouder;
     private Toewijzingsaanvraag toewijzingsaanvraag;
@@ -44,6 +46,12 @@ public class ControllerNieuweAanvraag implements Initializable {
     private HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen;
     private IAfstandBerekeningFormule afstandBerekeningFormule;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    // getters & setters
     public Parent getElementen() {
         return elementen;
     }
@@ -68,11 +76,6 @@ public class ControllerNieuweAanvraag implements Initializable {
         this.toewijzingsaanvraag = toewijzingsaanvraag;
     }
 
-    public void verwijderToewijzingsaanvraag() {
-        this.toewijzingsaanvraag = null;
-        Toewijzingsaanvraag.setAantalAanvragen(Toewijzingsaanvraag.getAantalAanvragen() - 1);
-    }
-
     public void setScholen(ArrayList<School> scholen) {
         this.scholen = scholen;
         for (School school: scholen) {
@@ -94,10 +97,7 @@ public class ControllerNieuweAanvraag implements Initializable {
         this.afstandBerekeningFormule = afstandBerekeningFormule;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
+    // event handlers
 
     // de "indienen" button wordt ingedrukt
     // niet "indien een button gedrukt wordt"
@@ -145,13 +145,11 @@ public class ControllerNieuweAanvraag implements Initializable {
         }
     }
 
-    private boolean scholenCorrect() {
-        School eersteKeuze = eersteKeuzeBox.getValue();
-        School tweedeKeuze = tweedeKeuzeBox.getValue();
-        School derdeKeuze = derdeKeuzeBox.getValue();
-        if(eersteKeuze != null && tweedeKeuze != null && derdeKeuze != null)
-            return !(eersteKeuze.equals(tweedeKeuze) || eersteKeuze.equals(derdeKeuze) || tweedeKeuze.equals(derdeKeuze));
-        return false;
+    // andere public methoden
+
+    public void verwijderToewijzingsaanvraag() {
+        this.toewijzingsaanvraag = null;
+        Toewijzingsaanvraag.setAantalAanvragen(Toewijzingsaanvraag.getAantalAanvragen() - 1);
     }
 
     //zet alle velden terug op null of false
@@ -163,6 +161,17 @@ public class ControllerNieuweAanvraag implements Initializable {
         eersteKeuzeCheckbox.setSelected(false);
         tweedeKeuzeCheckbox.setSelected(false);
         derdeKeuzeCheckbox.setSelected(false);
+    }
+
+    // private hulpmethoden
+
+    private boolean scholenCorrect() {
+        School eersteKeuze = eersteKeuzeBox.getValue();
+        School tweedeKeuze = tweedeKeuzeBox.getValue();
+        School derdeKeuze = derdeKeuzeBox.getValue();
+        if(eersteKeuze != null && tweedeKeuze != null && derdeKeuze != null)
+            return !(eersteKeuze.equals(tweedeKeuze) || eersteKeuze.equals(derdeKeuze) || tweedeKeuze.equals(derdeKeuze));
+        return false;
     }
 
     private Voorkeur getVoorkeur(ChoiceBox<School> keuzeBox, CheckBox checkBox,

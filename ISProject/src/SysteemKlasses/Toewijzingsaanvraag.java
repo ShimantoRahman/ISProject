@@ -25,15 +25,6 @@ public class Toewijzingsaanvraag {
     }
 
     public Toewijzingsaanvraag(int toewijzingsaanvraagNummer, Ouder ouder, Student student, Voorkeur[] voorkeuren,
-                               StatusToewijzingsaanvraag statusToewijzingsaanvraag) {
-        this.toewijzingsaanvraagNummer = toewijzingsaanvraagNummer;
-        this.ouder = ouder;
-        this.student = student;
-        this.voorkeuren = voorkeuren;
-        this.statusToewijzingsaanvraag = statusToewijzingsaanvraag;
-    }
-
-    public Toewijzingsaanvraag(int toewijzingsaanvraagNummer, Ouder ouder, Student student, Voorkeur[] voorkeuren,
                                boolean thuisscholingToegewezen, StatusToewijzingsaanvraag statusToewijzingsaanvraag) {
         this.toewijzingsaanvraagNummer = toewijzingsaanvraagNummer;
         this.ouder = ouder;

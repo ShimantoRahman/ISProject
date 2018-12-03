@@ -18,76 +18,84 @@ import java.util.ResourceBundle;
 
 public class ControllerOverzichtToewijzingsaanvraag implements Initializable {
 
+    // FXML variabelen
     @FXML
-    ChoiceBox<Toewijzingsaanvraag> aanvragenChoicebox;
+    private ChoiceBox<Toewijzingsaanvraag> aanvragenChoicebox;
     @FXML
-    Label datumLbl;
+    private Label datumLbl;
     @FXML
-    ScrollPane ficheAanvraag;
+    private ScrollPane ficheAanvraag;
     @FXML
-    Label aanvraagNrLbl;
+    private Label aanvraagNrLbl;
     @FXML
-    Label statusLbl;
+    private Label statusLbl;
     @FXML
-    Label toegewezenSchoolLbl;
+    private Label toegewezenSchoolLbl;
     @FXML
-    Label naamKindLbl;
+    private Label naamKindLbl;
     @FXML
-    Label voornaamKindLbl;
+    private Label voornaamKindLbl;
     @FXML
-    Label RRNKindLbl;
+    private Label RRNKindLbl;
     @FXML
-    Label telefoonNrKindLbl;
+    private Label telefoonNrKindLbl;
     @FXML
-    Label naamOuderLbl;
+    private Label naamOuderLbl;
     @FXML
-    Label voornaamOuderLbl;
+    private Label voornaamOuderLbl;
     @FXML
-    Label RRNOuderLbl;
+    private Label RRNOuderLbl;
     @FXML
-    Label straatOuderLbl;
+    private Label straatOuderLbl;
     @FXML
-    Label huisNrOuderLbl;
+    private Label huisNrOuderLbl;
     @FXML
-    Label postcodeOuderLbl;
+    private Label postcodeOuderLbl;
     @FXML
-    Label gemeenteOuderLbl;
+    private Label gemeenteOuderLbl;
     @FXML
-    Label emailOuderLbl;
+    private Label emailOuderLbl;
     @FXML
-    Label vk1NaamLbl;
+    private Label vk1NaamLbl;
     @FXML
-    Label vk1StraatLbl;
+    private Label vk1StraatLbl;
     @FXML
-    Label vk1HuisNrLbl;
+    private Label vk1HuisNrLbl;
     @FXML
-    Label vk1PostcodeLbl;
+    private Label vk1PostcodeLbl;
     @FXML
-    Label vk1GemeenteLbl;
+    private Label vk1GemeenteLbl;
     @FXML
-    Label vk2NaamLbl;
+    private Label vk2NaamLbl;
     @FXML
-    Label vk2StraatLbl;
+    private Label vk2StraatLbl;
     @FXML
-    Label vk2HuisNrLbl;
+    private Label vk2HuisNrLbl;
     @FXML
-    Label vk2PostcodeLbl;
+    private Label vk2PostcodeLbl;
     @FXML
-    Label vk2GemeenteLbl;
+    private Label vk2GemeenteLbl;
     @FXML
-    Label vk3NaamLbl;
+    private Label vk3NaamLbl;
     @FXML
-    Label vk3StraatLbl;
+    private Label vk3StraatLbl;
     @FXML
-    Label vk3HuisNrLbl;
+    private Label vk3HuisNrLbl;
     @FXML
-    Label vk3PostcodeLbl;
+    private Label vk3PostcodeLbl;
     @FXML
-    Label vk3GemeenteLbl;
+    private Label vk3GemeenteLbl;
 
+    // instantie variabelen
     private Parent elementen;
     private HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ficheAanvraag.setVisible(false);
+    }
+
+    // getters & setters
     public Parent getElementen() {
         return elementen;
     }
@@ -102,6 +110,7 @@ public class ControllerOverzichtToewijzingsaanvraag implements Initializable {
             aanvragenChoicebox.getItems().add(toewijzingsaanvraag);
     }
 
+    // event handlers
     public void toonFicheBtnPressed() {
         Toewijzingsaanvraag toewijzingsaanvraag = aanvragenChoicebox.getSelectionModel().getSelectedItem();
         if(toewijzingsaanvraag != null) {
@@ -113,12 +122,14 @@ public class ControllerOverzichtToewijzingsaanvraag implements Initializable {
         }
     }
 
+    // andere public methoden
     public void reset() {
         ficheAanvraag.setVisible(false);
         aanvragenChoicebox.getSelectionModel().select(null);
         aanvragenChoicebox.getItems().removeAll(toewijzingsaanvragen.values());
     }
 
+    // private hulpmethoden
     private void vulFiche(Toewijzingsaanvraag toewijzingsaanvraag) {
         aanvraagNrLbl.setText(""+ toewijzingsaanvraag.getToewijzingsaanvraagNummer());
         statusLbl.setText(toewijzingsaanvraag.getStatusToewijzingsaanvraag().toString());
@@ -170,10 +181,4 @@ public class ControllerOverzichtToewijzingsaanvraag implements Initializable {
         vk3PostcodeLbl.setText("" + voorkeursschool3.getAdres().getGemeente().getPostcode());
         vk3GemeenteLbl.setText(voorkeursschool3.getAdres().getGemeente().getNaam());
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        ficheAanvraag.setVisible(false);
-    }
-
 }

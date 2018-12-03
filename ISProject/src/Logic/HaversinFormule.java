@@ -7,13 +7,16 @@ public class HaversinFormule implements IAfstandBerekeningFormule {
 
     //code: https://github.com/jasonwinn/haversine/blob/master/Haversine.java
 
+    // static constanten
     private static final int EARTH_RADIUS = 6371; // Approx Earth radius in KM
 
+    // instantie variabelen
     private double startBreedtegraad;
     private double startLengtegraad;
     private double eindBreedtegraad;
     private double eindLentegraad;
 
+    // getters & setters
     public void setPunten(double startBreedtegraad, double startLengtegraad,
                           double eindBreedtegraad, double eindLentegraad) {
         this.startBreedtegraad = startBreedtegraad;
@@ -36,6 +39,7 @@ public class HaversinFormule implements IAfstandBerekeningFormule {
         return EARTH_RADIUS * c; // <-- d
     }
 
+    // private hulpmethoden
     private double haversin(double waarde) {
         return Math.pow(Math.sin(waarde / 2), 2);
     }

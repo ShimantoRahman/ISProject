@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BroerZusAfstandLotingIndividueleProcedure implements IIndividueleProcedure{
+
+    // instantie variabelen
+
     // <Rijksregisternummer, Ouder object>
     private HashMap<String, Ouder> ouders;
     // <Rijksregisternummer, Student object>
@@ -15,6 +18,8 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
     private ArrayList<School> scholen;
     private ISortingAlgoritm sortingAlgoritm;
     private IAfstandBerekeningFormule afstandBerekeningFormule;
+
+    // constructors
 
     public BroerZusAfstandLotingIndividueleProcedure(HashMap<String, Ouder> ouders, HashMap<String, Student> studenten,
                                                      HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen,
@@ -28,80 +33,53 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
         this.afstandBerekeningFormule = afstandBerekeningFormule;
     }
 
-    // voert de individuele toewijzingsprocedure uit
+    // public methoden
+
     @Override
     public void startIndividueleProcedure(Toewijzingsaanvraag toewijzingsaanvraag) {
-        Student student = toewijzingsaanvraag.getStudent();
-        Voorkeur voorkeur = volgendeVoorkeursschool(toewijzingsaanvraag);
+        Voorkeur nietGeweigerdevoorkeur = volgendeNietGeweigerdeVoorkeursschool(toewijzingsaanvraag);
 
-        // student heeft nog een voorkeursschool die nog niet geweigerd is
-        if(voorkeur != null) {
-            // kijkt of er genoeg of te weinig plaatsen zijn op de voorkeursschool en voert toepasselijke code toe
-            School school = voorkeur.getSchool();
-            analyzePlaatsenSchool(toewijzingsaanvraag, voorkeur, school, student);
-        }
-
-        // student heeft geen voorkeurrschool meer die nog niet geweigerd is
-        else {
-            // kijkt of er nog vrije scholen zijn en voert toepasselijke code toe
-            analyzeVrijeScholen(toewijzingsaanvraag, student);
-        }
+        if(nietGeweigerdevoorkeur != null)
+            StudentHeeftNogEenVoorkeurrschool(toewijzingsaanvraag, nietGeweigerdevoorkeur);
+        else
+            StudentHeeftGeenVoorkeursschoolMeer(toewijzingsaanvraag);
     }
 
-    private void analyzePlaatsenSchool(Toewijzingsaanvraag toewijzingsaanvraag, Voorkeur voorkeur, School school, Student student) {
-        // zet school als voorlopig toegewezen school bij student
-        toewijzingsaanvraag.getStudent().setToegewezenSchool(school);
-        // zet student bij de voorlopig toegewezen studenten van die school
-        school.getStudenten().put(student.getRijksregisterNummer(), student);
+    // private hulpmethoden
 
-        // indien de school niet genoeg plaatsen heeft
-        if(!heeftGenoegPlaatsen(school)) {
-            rangschikkingEnToewijzing(voorkeur, school);
-        }
+    // retourneert de volgende voorkeursschool die nog niet is geweigerd
+    // als alle voorkeursscholen geweigerd zijn, dan retourneert de methode null
+    private Voorkeur volgendeNietGeweigerdeVoorkeursschool(Toewijzingsaanvraag toewijzingsaanvraag) {
+        for (Voorkeur voorkeur: toewijzingsaanvraag.getVoorkeuren()) {
+            if(voorkeur.getStatus() == StatusVoorkeur.Toegewezen || voorkeur.getStatus() == StatusVoorkeur.Undefined)
+                return voorkeur;
+        } return null;
+    }
 
-        // indien de school genoeg plaatsen heeft
-        // zet de statusVoorkeur op toegewezen
-        // zet de toegewezen school op deze school
-        // zet de student bij de haspmap toegewezen studenten bij de school
-        else {
+    private void StudentHeeftNogEenVoorkeurrschool
+            (Toewijzingsaanvraag toewijzingsaanvraag, Voorkeur voorkeur) {
+        School school = voorkeur.getSchool();
+
+        wijsStudentVoorlopigToeAanSchool(toewijzingsaanvraag.getStudent(), school);
+
+        if(heeftSchoolGenoegPlaatsen(school))
             voorkeur.setStatus(StatusVoorkeur.Toegewezen);
-            toewijzingsaanvraag.getStudent().setToegewezenSchool(school);
-            school.getStudenten().put(student.getRijksregisterNummer(), student);
-        }
+        else
+            rangschikkingEnToewijzingStudenten(school);
     }
 
-    private void rangschikkingEnToewijzing(Voorkeur voorkeur, School school) {
+    private boolean heeftSchoolGenoegPlaatsen(School school) {
+        return school.getAantalPlaatsen() >= school.getStudenten().size();
+    }
+
+    private void rangschikkingEnToewijzingStudenten(School school) {
         try {
-            // zoek alle toewijzingsaanvragen die de huidige school als toegewezen school hebben
-            Toewijzingsaanvraag[] aanvragen = getToewijzingsaanvragenAanSchool(school);
+            Toewijzingsaanvraag[] aanvragenAanSchool = getToewijzingsaanvragenAanSchool(school);
 
             // rangschik alle studenten
-            sortingAlgoritm.sort(aanvragen, school);
+            sortingAlgoritm.sort(aanvragenAanSchool, school);
 
-            // zet de statusVoorkeur van alle studenten die gunstig gerangschikt zijn op toegewezen
-            // zet hun toegewezen school op deze school
-            // zet de student bij de haspmap toegewezen studenten bij de school
-            for (int i = 0; i < voorkeur.getSchool().getAantalPlaatsen(); i++) {
-                int index = aanvragen[i].getVoorkeurIndex(school);
-                if(index < 0)
-                    throw new ToewijzingsaanvraagException("Voorkeursschool niet gevonden in de voorkeuren");
-                aanvragen[i].getVoorkeuren()[index].setStatus(StatusVoorkeur.Toegewezen);
-                aanvragen[i].getStudent().setToegewezenSchool(school);
-                Student tempStudent = aanvragen[i].getStudent();
-                school.getStudenten().put(tempStudent.getRijksregisterNummer(), tempStudent);
-            }
-
-            // zet de statusVoorkeur van alle studenten die ongunstig gerangschikt zijn op geweigerd
-            // zet hun voorlopig toegewezen school op null
-            // verwijdert de student van de hashmap toegewezen studenten bij de school
-            for (int i = voorkeur.getSchool().getAantalPlaatsen(); i < aanvragen.length; i++) {
-                int index = aanvragen[i].getVoorkeurIndex(school);
-                if(index < 0)
-                    throw new ToewijzingsaanvraagException("Voorkeursschool niet gevonden in de voorkeuren");
-                aanvragen[i].getVoorkeuren()[index].setStatus(StatusVoorkeur.Geweigerd);
-                aanvragen[i].getStudent().setToegewezenSchool(null);
-                school.getStudenten().remove(aanvragen[i].getStudent().getRijksregisterNummer());
-            }
+            toewijzingStudenten(aanvragenAanSchool, school);
 
         } catch (ToewijzingsaanvraagException e) {
             System.out.println(e.getMessage());
@@ -109,55 +87,63 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
         }
     }
 
-    private void analyzeVrijeScholen(Toewijzingsaanvraag toewijzingsaanvraag, Student student) {
-        // ga door alle scholen om te zien of er nog scholen zijn met vrije plaatsen
-        // plaats deze scholen in een arraylist
+    private void toewijzingStudenten(Toewijzingsaanvraag[] aanvragenAanSchool, School school)
+            throws ToewijzingsaanvraagException{
+
+        toewijzingGunstigGerangschikteStudenten(aanvragenAanSchool, school);
+        toewijzingsOngunstigGerangschikteStudenten(aanvragenAanSchool, school);
+    }
+
+    private void toewijzingGunstigGerangschikteStudenten (Toewijzingsaanvraag[] aanvragenAanSchool, School school)
+            throws ToewijzingsaanvraagException {
+
+        for (int i = 0; i < school.getAantalPlaatsen(); i++) {
+            int index = aanvragenAanSchool[i].getVoorkeurIndex(school);
+            if(index < 0)
+                throw new ToewijzingsaanvraagException("Voorkeursschool niet gevonden in de voorkeuren");
+            aanvragenAanSchool[i].getVoorkeuren()[index].setStatus(StatusVoorkeur.Toegewezen);
+            wijsStudentVoorlopigToeAanSchool(aanvragenAanSchool[i].getStudent(), school);
+        }
+    }
+
+    private void toewijzingsOngunstigGerangschikteStudenten (Toewijzingsaanvraag[] aanvragenAanSchool, School school)
+            throws ToewijzingsaanvraagException {
+        for (int i = school.getAantalPlaatsen(); i < aanvragenAanSchool.length; i++) {
+            int index = aanvragenAanSchool[i].getVoorkeurIndex(school);
+            if(index < 0)
+                throw new ToewijzingsaanvraagException("Voorkeursschool niet gevonden in de voorkeuren");
+            aanvragenAanSchool[i].getVoorkeuren()[index].setStatus(StatusVoorkeur.Geweigerd);
+            aanvragenAanSchool[i].getStudent().setToegewezenSchool(null);
+            school.getStudenten().remove(aanvragenAanSchool[i].getStudent().getRijksregisterNummer());
+        }
+    }
+
+    private void StudentHeeftGeenVoorkeursschoolMeer(Toewijzingsaanvraag toewijzingsaanvraag) {
         ArrayList<School> vrijeScholen = getVrijeScholen();
 
-        //indien er nog vrije scholen zijn
         if(vrijeScholen.size() > 0) {
-            // zoek in deze arraylist die de kleinste afstand heeft tot de student
-            School dichtsteSchool = vindDichtsteSchool(vrijeScholen, toewijzingsaanvraag);
-
-            // wijs de student toe tot deze school
-            toewijzingsaanvraag.getStudent().setToegewezenSchool(dichtsteSchool);
-            dichtsteSchool.getStudenten().put(student.getRijksregisterNummer(), student);
-        }
-
-        //indien er geen vrije scholen meer zijn
-        else {
-            // thuisonderwijs
-            toewijzingsaanvraag.setThuisscholingToegewezen(true);
-            toewijzingsaanvraag.getStudent().setToegewezenSchool(null);
+            wijsStudentToeAanDichtsteSchool(toewijzingsaanvraag, vrijeScholen);
+        } else {
+            wijsStudentToeAanThuisscholing(toewijzingsaanvraag);
         }
     }
 
-    // retourneert de volgende voorkeursschool die nog niet is geweigerd
-    // als alle voorkeursscholen geweigerd zijn, dan retourneert de methode null
-    private Voorkeur volgendeVoorkeursschool(Toewijzingsaanvraag toewijzingsaanvraag) {
-        for (Voorkeur voorkeur: toewijzingsaanvraag.getVoorkeuren()) {
-            if(voorkeur.getStatus() == StatusVoorkeur.Toegewezen || voorkeur.getStatus() == StatusVoorkeur.Undefined)
-                return voorkeur;
-        } return null;
+    private void wijsStudentVoorlopigToeAanSchool(Student student, School school) {
+        student.setToegewezenSchool(school);
+        school.getStudenten().put(student.getRijksregisterNummer(), student);
     }
 
-    // retourneert of een school genoeg plaatsen heeft
-    private boolean heeftGenoegPlaatsen(School school) {
-        return school.getAantalPlaatsen() >= school.getStudenten().size();
+    private void wijsStudentToeAanDichtsteSchool(Toewijzingsaanvraag toewijzingsaanvraag,
+                                                 ArrayList<School> vrijeScholen) {
+        School dichtsteSchool = vindDichtsteSchool(vrijeScholen, toewijzingsaanvraag);
+        wijsStudentVoorlopigToeAanSchool(toewijzingsaanvraag.getStudent(), dichtsteSchool);
     }
 
-    /*
-    // retourneert een arraylist met alle studenten op die school
-    private ArrayList<Student> getStudentenOpSchool(School school) {
-        ArrayList<Student> studenten = new ArrayList<>();
-        for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values()) {
-            if(toewijzingsaanvraag.getToegewezenSchool().equals(school))
-                studenten.add(toewijzingsaanvraag.getStudent());
-        } return studenten;
+    private void wijsStudentToeAanThuisscholing(Toewijzingsaanvraag toewijzingsaanvraag) {
+        toewijzingsaanvraag.setThuisscholingToegewezen(true);
+        toewijzingsaanvraag.getStudent().setToegewezenSchool(null);
     }
-    */
 
-    // retourneert een arraylist met alle toewijzingsaanvragen die toegewezen zijn aan die school
     private Toewijzingsaanvraag[] getToewijzingsaanvragenAanSchool(School school) {
         ArrayList<Toewijzingsaanvraag> aanvragen = new ArrayList<>();
         for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values()) {
@@ -166,7 +152,6 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
         } return aanvragen.toArray(new Toewijzingsaanvraag[aanvragen.size()]);
     }
 
-    // retourneert alle scholen die nog vrije plaatsen hebben in een arraylist
     private ArrayList<School> getVrijeScholen() {
         ArrayList<School> vrijeScholen = new ArrayList<>();
         for (School school: scholen) {
@@ -191,7 +176,6 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
 
         for (int i = 1; i <scholen.size(); i++) {
             School school = scholen.get(i);
-            Adres adresSchool = school.getAdres();
 
             // vind lengte-en breedtegraden van de adressen
             breedtegraadSchool = school.getAdres().getGemeente().getBreedtegraad();

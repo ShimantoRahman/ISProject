@@ -2,16 +2,21 @@ package Logic;
 
 import SysteemKlasses.*;
 
-public class SelectionSort implements ISortingAlgoritm{
+public class SelectionSort implements ISortingAlgoritm {
+    // instantie variabelen
     private IAfstandBerekeningFormule afstandBerekeningFormule;
 
+    //constructors
     public SelectionSort(IAfstandBerekeningFormule afstandBerekeningFormule) {
         this.afstandBerekeningFormule = afstandBerekeningFormule;
     }
 
+    // public methoden
+
     // sorteert een array van toewijzingsaanvragen waarbij de eerste aanvraag de meest gunstig is
     // en de laatste de minst gunstig
-    public Toewijzingsaanvraag[] sort(Toewijzingsaanvraag[] aanvragen, School school) throws ToewijzingsaanvraagException{
+    public Toewijzingsaanvraag[] sort(Toewijzingsaanvraag[] aanvragen, School school)
+            throws ToewijzingsaanvraagException{
         for (int i = 0; i < aanvragen.length - 1; i++) {
 
             int index = i;
@@ -60,10 +65,10 @@ public class SelectionSort implements ISortingAlgoritm{
             aanvragen[i] = aanvragen[index];
             aanvragen[index] = tempAanvraag;
 
-        }
-
-        return aanvragen;
+        } return aanvragen;
     }
+
+    // private hulpmethoden
 
     // retourneert de voorkeur waaraan de student voorlopig is toegewezen
     // zou normaal gezien altijd een waarde moeten retourneren anders gooit de method een exception
@@ -73,14 +78,15 @@ public class SelectionSort implements ISortingAlgoritm{
                 return voorkeur;
         }
         if(aanvraag.getStudent().getToegewezenSchool().equals(school)) {
-            double afstand = berekenAfstand(aanvraag.getOuder(), school);
+            double afstand = berekenAfstandTussenOuderEnSchool(aanvraag.getOuder(), school);
+            // maak dummy voorkeur aan
             return new Voorkeur(school, afstand, false);
         }
         throw new ToewijzingsaanvraagException("In methode 'getToegewezenVoorkeur' is een aanvraag meegegeven " +
                 "zonder voorlopig toegewezen school");
     }
 
-    private double berekenAfstand(Ouder ouder, School school) {
+    private double berekenAfstandTussenOuderEnSchool(Ouder ouder, School school) {
         double breedtegraadOuder =  ouder.getAdres().getGemeente().getBreedtegraad();
         double lengtegraadOuder =  ouder.getAdres().getGemeente().getLengtegraad();
         double breedtegraadSchool =  school.getAdres().getGemeente().getBreedtegraad();
