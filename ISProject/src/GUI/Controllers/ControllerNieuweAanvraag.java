@@ -105,7 +105,7 @@ public class ControllerNieuweAanvraag implements Initializable {
         //test of dat de data correct is ingevoerd
         String RRNStudent = RRNummerTxt.getText();
         // er is geen student met dit rijksregisternummer
-        if(!RRNStudent.equals("root") && !studenten.containsKey(RRNStudent)) {
+        if(!studenten.containsKey(RRNStudent)) {
             AlertBox alertBox = new AlertBox("Error","Er is geen student met dit rijksregisternummer");
             alertBox.show();
         }
@@ -148,13 +148,15 @@ public class ControllerNieuweAanvraag implements Initializable {
     // andere public methoden
 
     public void verwijderToewijzingsaanvraag() {
-        this.toewijzingsaanvraag = null;
-        Toewijzingsaanvraag.setAantalAanvragen(Toewijzingsaanvraag.getAantalAanvragen() - 1);
+        if(toewijzingsaanvraag != null) {
+            this.toewijzingsaanvraag = null;
+            Toewijzingsaanvraag.setAantalAanvragen(Toewijzingsaanvraag.getAantalAanvragen() - 1);
+        }
     }
 
-    //zet alle velden terug op null of false
+    //zet alle velden terug op default waarde
     public void reset() {
-        RRNummerTxt.setText(null);
+        RRNummerTxt.setText("");
         eersteKeuzeBox.setValue(null);
         tweedeKeuzeBox.setValue(null);
         derdeKeuzeBox.setValue(null);
@@ -191,7 +193,7 @@ public class ControllerNieuweAanvraag implements Initializable {
 
     private boolean heeftStudentAlEenToewijzingsaanvraag(String rijksregisternummer) {
         for (Toewijzingsaanvraag aanvraag: toewijzingsaanvragen.values()) {
-            if(aanvraag.getStudent().getRijksregisterNummer().equals(rijksregisternummer));
+            if(aanvraag.getStudent().getRijksregisterNummer().equals(rijksregisternummer))
                 return true;
         } return false;
     }

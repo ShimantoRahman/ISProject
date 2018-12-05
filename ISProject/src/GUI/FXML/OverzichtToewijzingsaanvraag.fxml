@@ -74,7 +74,7 @@
                               <Font name="Calibri Light" size="12.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="15.0" />
+                              <Insets right="3.0" />
                            </HBox.margin>
                         </Label>
                         <Label fx:id="aanvraagNrLbl" style="-fx-font-family: Calibri Light;" text="toewijzingsaanvraagnummer" />
@@ -84,7 +84,7 @@
                      <children>
                         <Label text="Status:">
                            <HBox.margin>
-                              <Insets right="15.0" />
+                              <Insets right="3.0" />
                            </HBox.margin>
                            <font>
                               <Font name="Calibri Light" size="12.0" />
@@ -100,7 +100,7 @@
                               <Font name="Calibri Light" size="12.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="15.0" />
+                              <Insets right="3.0" />
                            </HBox.margin>
                         </Label>
                         <Label fx:id="toegewezenSchoolLbl" style="-fx-font-family: Calibri Light;" text="toegewezen school" />
@@ -108,31 +108,31 @@
                   </HBox>
                       <VBox>
                           <children>
-                        <HBox layoutX="10.0" layoutY="129.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="129.0" spacing="3.0">
                            <children>
                               <Label text="• Naam kind:" />
                               <Label fx:id="naamKindLbl" text="naam" />
                            </children>
                         </HBox>
-                              <HBox spacing="15.0">
+                              <HBox spacing="3.0">
                                   <children>
                                       <Label text="• Voornaam kind:" />
                                       <Label fx:id="voornaamKindLbl" text="voornaam" />
                                   </children>
                               </HBox>
-                        <HBox layoutX="10.0" layoutY="146.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="146.0" spacing="3.0">
                            <children>
                               <Label text="• Rijksregisternummer kind:" />
                               <Label fx:id="RRNKindLbl" text="rijksregisternummer" />
                            </children>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="10.0" spacing="3.0">
                            <children>
                               <Label text="• Telefoonnummer kind:" />
                               <Label fx:id="telefoonNrKindLbl" text="telefoonnummer" />
                            </children>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="197.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="197.0" spacing="3.0">
                            <children>
                               <Label text="• Naam ouder:" />
                               <Label fx:id="naamOuderLbl" text="naam" />
@@ -141,19 +141,19 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="10.0" spacing="3.0">
                            <children>
                               <Label text="• Voornaam ouder:" />
                               <Label fx:id="voornaamOuderLbl" text="voornaam" />
                            </children>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="180.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="180.0" spacing="3.0">
                            <children>
                               <Label text="• Rijksregisternummer ouder:" />
                               <Label fx:id="RRNOuderLbl" text="rijksregisternummer" />
                            </children>
                         </HBox>
-                              <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                              <HBox layoutX="10.0" layoutY="10.0" spacing="3.0">
                                   <children>
                                       <Label text="• Adres:" />
                                   </children>
@@ -164,7 +164,7 @@
                                           <children>
                                               <Label text="■ Straat: ">
                                                   <HBox.margin>
-                                                      <Insets right="15.0" />
+                                                      <Insets right="3.0" />
                                                   </HBox.margin>
                                               </Label>
                                               <Label fx:id="straatOuderLbl" text="straat" />
@@ -177,7 +177,7 @@
                                           <children>
                                               <Label text="■ Huisnummer: ">
                                                   <HBox.margin>
-                                                      <Insets right="15.0" />
+                                                      <Insets right="3.0" />
                                                   </HBox.margin>
                                               </Label>
                                               <Label fx:id="huisNrOuderLbl" text="huisnummer" />
@@ -187,7 +187,7 @@
                                           <children>
                                               <Label text="■ Postcode: ">
                                                   <HBox.margin>
-                                                      <Insets right="15.0" />
+                                                      <Insets right="3.0" />
                                                   </HBox.margin>
                                               </Label>
                                               <Label fx:id="postcodeOuderLbl" text="postcode" />
@@ -197,7 +197,7 @@
                                           <children>
                                               <Label text="■ Gemeente: ">
                                                   <HBox.margin>
-                                                      <Insets right="15.0" />
+                                                      <Insets right="3.0" />
                                                   </HBox.margin>
                                               </Label>
                                               <Label fx:id="gemeenteOuderLbl" text="gemeente" />
@@ -208,7 +208,7 @@
                                       <Insets left="15.0" />
                                   </VBox.margin>
                               </VBox>
-                              <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                              <HBox layoutX="10.0" layoutY="10.0" spacing="3.0">
                                   <children>
                                       <Label text="• E-mailadres:" />
                                       <Label fx:id="emailOuderLbl" text="email" />
@@ -226,13 +226,13 @@
                       </Label>
                   <VBox layoutX="25.0" layoutY="160.0">
                      <children>
-                        <HBox layoutX="10.0" layoutY="129.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="129.0" spacing="3.0">
                            <children>
                               <Label text="• Naam school:" />
                               <Label fx:id="vk1NaamLbl" text="naam" />
                            </children>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="10.0" spacing="3.0">
                            <children>
                               <Label text="• Adres:" />
                            </children>
@@ -243,7 +243,7 @@
                                  <children>
                                     <Label text="■ Straat: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk1StraatLbl" text="straat" />
@@ -256,7 +256,7 @@
                                  <children>
                                     <Label text="■ Huisnummer: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk1HuisNrLbl" text="huisnummer" />
@@ -266,17 +266,20 @@
                                  <children>
                                     <Label text="■ Postcode: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk1PostcodeLbl" text="postcode" />
                                  </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                               </HBox>
                               <HBox layoutX="10.0" layoutY="44.0">
                                  <children>
                                     <Label text="■ Gemeente: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk1GemeenteLbl" text="gemeente" />
@@ -294,13 +297,13 @@
                   </VBox>
                   <VBox layoutX="25.0" layoutY="430.0">
                      <children>
-                        <HBox layoutX="10.0" layoutY="129.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="129.0" spacing="3.0">
                            <children>
                               <Label text="• Naam school:" />
                               <Label fx:id="vk2NaamLbl" text="naam" />
                            </children>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="10.0" spacing="3.0">
                            <children>
                               <Label text="• Adres:" />
                            </children>
@@ -311,7 +314,7 @@
                                  <children>
                                     <Label text="■ Straat: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk2StraatLbl" text="straat" />
@@ -324,7 +327,7 @@
                                  <children>
                                     <Label text="■ Huisnummer: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk2HuisNrLbl" text="huisnummer" />
@@ -334,7 +337,7 @@
                                  <children>
                                     <Label text="■ Postcode: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk2PostcodeLbl" text="postcode" />
@@ -344,7 +347,7 @@
                                  <children>
                                     <Label text="■ Gemeente: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk2GemeenteLbl" text="gemeente" />
@@ -362,13 +365,13 @@
                   </VBox>
                   <VBox layoutX="10.0" layoutY="549.0">
                      <children>
-                        <HBox layoutX="10.0" layoutY="129.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="129.0" spacing="3.0">
                            <children>
                               <Label text="• Naam school:" />
                               <Label fx:id="vk3NaamLbl" text="naam" />
                            </children>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="10.0" spacing="15.0">
+                        <HBox layoutX="10.0" layoutY="10.0" spacing="3.0">
                            <children>
                               <Label text="• Adres:" />
                            </children>
@@ -379,7 +382,7 @@
                                  <children>
                                     <Label text="■ Straat: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk3StraatLbl" text="straat" />
@@ -392,7 +395,7 @@
                                  <children>
                                     <Label text="■ Huisnummer: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk3HuisNrLbl" text="huisnummer" />
@@ -402,7 +405,7 @@
                                  <children>
                                     <Label text="■ Postcode: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk3PostcodeLbl" text="postcode" />
@@ -412,7 +415,7 @@
                                  <children>
                                     <Label text="■ Gemeente: ">
                                        <HBox.margin>
-                                          <Insets right="15.0" />
+                                          <Insets right="3.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Label fx:id="vk3GemeenteLbl" text="gemeente" />

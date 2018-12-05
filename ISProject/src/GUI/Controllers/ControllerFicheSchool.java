@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class ControllerFicheSchool implements Initializable {
@@ -89,6 +90,8 @@ public class ControllerFicheSchool implements Initializable {
 
     // private hulpmethoden
     private void vulFiche(School school) {
+        Date datum = new Date();
+        datumLbl.setText(datum.toString());
         naamLbl.setText(school.getNaam());
         straatLbl.setText(school.getAdres().getStraat());
         huisnummerLbl.setText(school.getAdres().getStraatnummer());

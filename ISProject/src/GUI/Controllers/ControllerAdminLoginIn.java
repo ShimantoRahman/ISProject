@@ -89,7 +89,7 @@ public class ControllerAdminLoginIn implements Initializable{
     // event handlers
     public void logInBtnPressed() {
         if(passwordField.getText().equals("root")) {
-            passwordField.setText("");
+            reset();
             primaryStage.setScene(adminPanel.getScene());
         } else {
             AlertBox alertBox = new AlertBox("Error", "Paswoord incorrect");
@@ -98,8 +98,13 @@ public class ControllerAdminLoginIn implements Initializable{
     }
 
     public void terugBtnPressed() {
-        passwordField.setText("");
+        reset();
         primaryStage.setScene(userLogIn.getScene());
+    }
+
+    //andere public methoden
+    public void reset() {
+        passwordField.setText("");
     }
 
 }

@@ -130,6 +130,11 @@ public class ControllerDashboard implements Initializable {
 
     // event handlers
 
+    public void HomepageButtonClicked() {
+        nieuweAanvraag.verwijderToewijzingsaanvraag();
+        updateFrame(homepage.getElementen(), "Homepage");
+    }
+
     // wanneer er op nieuwe aanvraag wordt geclicked dan maken we een nieuwe aanvraag aan
     // wanneer er weg wordt geclicked van nieuwe aanvraag, wordt de aanvraag verwijderd
     public void nieuweAanvraagButtonClicked() {
@@ -149,7 +154,7 @@ public class ControllerDashboard implements Initializable {
     }
 
     private void updateFrame(Parent elementen, String titel) {
-        mainFrame.getChildren().removeAll();
+        //mainFrame.getChildren().removeAll();
         mainFrame.getChildren().setAll(elementen);
         mainFrameLbl.setText(titel);
     }

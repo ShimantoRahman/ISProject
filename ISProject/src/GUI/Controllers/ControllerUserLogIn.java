@@ -77,7 +77,7 @@ public class ControllerUserLogIn implements Initializable {
         String rijksregisternummer = RRNummerOuder.getText();
         if(ouders.containsKey(rijksregisternummer)) {
             dashboard.setOuder(ouders.get(rijksregisternummer));
-            RRNummerOuder.setText("");
+            reset();
             primaryStage.setScene(dashboard.getScene());
         } else {
             AlertBox alertBox = new AlertBox("Fout Rijksregisternummer","Fout Rijksregisternummer");
@@ -86,7 +86,12 @@ public class ControllerUserLogIn implements Initializable {
     }
 
     public void logInAlsAdminPressed() {
-        RRNummerOuder.setText(null);
+        reset();
         primaryStage.setScene(adminLoginIn.getScene());
+    }
+
+    // andere public methoden
+    public void reset() {
+        RRNummerOuder.setText("");
     }
 }

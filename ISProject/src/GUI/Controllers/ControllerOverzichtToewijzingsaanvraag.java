@@ -13,10 +13,12 @@ import javafx.scene.control.ScrollPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class ControllerOverzichtToewijzingsaanvraag implements Initializable {
+    //TODO datum
 
     // FXML variabelen
     @FXML
@@ -131,6 +133,8 @@ public class ControllerOverzichtToewijzingsaanvraag implements Initializable {
 
     // private hulpmethoden
     private void vulFiche(Toewijzingsaanvraag toewijzingsaanvraag) {
+        Date datum = new Date();
+        datumLbl.setText(datum.toString());
         aanvraagNrLbl.setText(""+ toewijzingsaanvraag.getToewijzingsaanvraagNummer());
         statusLbl.setText(toewijzingsaanvraag.getStatusToewijzingsaanvraag().toString());
         if(toewijzingsaanvraag.getStudent().getToegewezenSchool() == null)
