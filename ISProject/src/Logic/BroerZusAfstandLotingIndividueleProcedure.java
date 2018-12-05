@@ -147,7 +147,8 @@ public class BroerZusAfstandLotingIndividueleProcedure implements IIndividuelePr
     private Toewijzingsaanvraag[] getToewijzingsaanvragenAanSchool(School school) {
         ArrayList<Toewijzingsaanvraag> aanvragen = new ArrayList<>();
         for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values()) {
-            if(toewijzingsaanvraag.getStudent().getToegewezenSchool().equals(school))
+            if(toewijzingsaanvraag.getStudent().getToegewezenSchool() != null
+                    && toewijzingsaanvraag.getStudent().getToegewezenSchool().equals(school))
                 aanvragen.add(toewijzingsaanvraag);
         } return aanvragen.toArray(new Toewijzingsaanvraag[aanvragen.size()]);
     }

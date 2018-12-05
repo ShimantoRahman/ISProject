@@ -36,24 +36,63 @@ public class StudentProposingToewijzingsAlgoritme implements IToewijzingsAlgorit
     // public methoden
     @Override
     public void startToewijzingsProcedure() {
-        voorlopigeToewijzingVanAlleKinderenAanEersteVoorkeur();
-        toewijzingsProcedureVoorElkKind();
-        toewijzingsProcedureVoorNietToegewezenKinderen();
-        definitieveToewijzingVanAlleKinderen();
+        try {
+            controleerInstantieVariabelen();
+            voorlopigeToewijzingVanAlleKinderenAanEersteVoorkeur();
+            toewijzingsProcedureVoorElkKind();
+            toewijzingsProcedureVoorNietToegewezenKinderen();
+            definitieveToewijzingVanAlleKinderen();
+        } catch (ToewijzingsaanvraagException e) {
+            System.out.println(e.getMessage());
+            System.exit(0);
+        }
+
+    }
+
+    private void controleerInstantieVariabelen() throws ToewijzingsaanvraagException {
+        if(studenten == null)
+            throw new ToewijzingsaanvraagException("Hashmap studenten is null");
+        if(ouders == null)
+            throw new ToewijzingsaanvraagException("Hashmap ouders is null");
+        if(scholen == null)
+            throw new ToewijzingsaanvraagException("Arraylist scholen is null");
+        if(toewijzingsaanvragen == null)
+            throw new ToewijzingsaanvraagException("Hashmap toewijzingsaanvragen is null");
+        if(individueleProcedure == null)
+            throw new ToewijzingsaanvraagException("Individueleprocedure is null");
     }
 
     // private hulpmethoden
 
     // Zet de status van alle toewijzingsaanvragen op voorlopig
     // Zet de toegewezenschool van elke student op de eerste voorkeurrschool
-    private void voorlopigeToewijzingVanAlleKinderenAanEersteVoorkeur() {
+    private void voorlopigeToewijzingVanAlleKinderenAanEersteVoorkeur() throws  ToewijzingsaanvraagException{
         for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values()) {
+            controleerToewijzingsaanvraag(toewijzingsaanvraag);
             toewijzingsaanvraag.setStatusToewijzingsaanvraag(StatusToewijzingsaanvraag.Voorlopig);
             Voorkeur eersteVoorkeur = toewijzingsaanvraag.getVoorkeuren()[0];
             toewijzingsaanvraag.getStudent().setToegewezenSchool(eersteVoorkeur.getSchool());
             eersteVoorkeur.setStatus(StatusVoorkeur.Toegewezen);
             eersteVoorkeur.getSchool().getStudenten()
                     .put(toewijzingsaanvraag.getStudent().getRijksregisterNummer(), toewijzingsaanvraag.getStudent());
+        }
+    }
+
+    private void controleerToewijzingsaanvraag(Toewijzingsaanvraag toewijzingsaanvraag)
+            throws ToewijzingsaanvraagException {
+        if(toewijzingsaanvraag == null)
+            throw new ToewijzingsaanvraagException("Toewijzingsaanvraag is null");
+        if(toewijzingsaanvraag.getStudent() == null)
+            throw new ToewijzingsaanvraagException("Student van toewijzingsaanvraag is null");
+        if(toewijzingsaanvraag.getOuder() == null)
+            throw new ToewijzingsaanvraagException("Ouder van toewijzingsaanvraag is null");
+        if(toewijzingsaanvraag.getVoorkeuren() == null)
+            throw new ToewijzingsaanvraagException("Voorkeuren van toewijzingsaanvraag is null");
+        for (Voorkeur voorkeur: toewijzingsaanvraag.getVoorkeuren()) {
+            if(voorkeur == null)
+                throw new ToewijzingsaanvraagException("voorkeur van voorkeuren is null");
+            if(voorkeur.getSchool() == null)
+                throw new ToewijzingsaanvraagException("voorkeurrschool is null");
         }
     }
 
