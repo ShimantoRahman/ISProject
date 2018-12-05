@@ -159,6 +159,7 @@ public class Main extends Application {
         Student jeroen = new Student("5", "Van Gils", "Jeroen", "567");
         Student arthur = new Student("6", "Verstaete", "Arthur", "678");
         Student celine = new Student("7", "Vandenbroucke", "Céline", "789");
+        Student barry = new Student("8", "Allen", "Barry", "890");
 
         System.out.println("Studenten gemaakt");
 
@@ -169,6 +170,7 @@ public class Main extends Application {
         studenten.put(jeroen.getRijksregisterNummer(), jeroen);
         studenten.put(arthur.getRijksregisterNummer(), arthur);
         studenten.put(celine.getRijksregisterNummer(), celine);
+        studenten.put(barry.getRijksregisterNummer(), barry);
 
         System.out.println("Studenten toegevoegd");
 
@@ -311,6 +313,13 @@ public class Main extends Application {
         aanvraag7.setStatusToewijzingsaanvraag(StatusToewijzingsaanvraag.Ingediend);
         aanvraag7.setVoorkeuren(voorkeurenCeline);
         toewijzingsaanvragen.put(aanvraag7.getToewijzingsaanvraagNummer(), aanvraag7);
+
+        /*
+        Toewijzingsaanvraag aanvraag8 = new Toewijzingsaanvraag(ouder1);
+        aanvraag8.setStudent(barry);
+        aanvraag8.setStatusToewijzingsaanvraag(StatusToewijzingsaanvraag.Ingediend);
+        toewijzingsaanvragen.put(aanvraag8.getToewijzingsaanvraagNummer(), aanvraag8);
+        */
 
         System.out.println("Aanvragen gemaakt en toegevoegd");
     }

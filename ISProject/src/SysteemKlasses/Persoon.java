@@ -3,13 +3,9 @@ package SysteemKlasses;
 import java.util.Objects;
 
 public abstract class Persoon {
-    private String rijksregisterNummer;
-    private String naam;
-    private String voornaam;
-
-    public Persoon() {
-        this("","","");
-    }
+    private final String rijksregisterNummer;
+    private final String naam;
+    private final String voornaam;
 
     public Persoon(String rijksregisterNummer, String naam, String voornaam) {
         this.rijksregisterNummer = rijksregisterNummer;
@@ -21,24 +17,12 @@ public abstract class Persoon {
         return rijksregisterNummer;
     }
 
-    public void setRijksregisterNummer(String rijksregisterNummer) {
-        this.rijksregisterNummer = rijksregisterNummer;
-    }
-
     public String getNaam() {
         return naam;
     }
 
-    public void setNaam(String naam) {
-        this.naam = naam;
-    }
-
     public String getVoornaam() {
         return voornaam;
-    }
-
-    public void setVoornaam(String voornaam) {
-        this.voornaam = voornaam;
     }
 
     @Override
