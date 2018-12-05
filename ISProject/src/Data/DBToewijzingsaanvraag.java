@@ -14,49 +14,114 @@ import java.util.HashMap;
  * @author jivgils
  */
 public class DBToewijzingsaanvraag {
-    /*
 
-    public static Toewijzingsaanvraag getToewijzingsaanvraag(int toewijzingsaanvraagNummer) throws DBException {
+    public static HashMap<Integer, Toewijzingsaanvraag> getToewijzingsaanvragen() throws DBException {
         Connection con = null;
-        try{
+        try {
+            HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen = new HashMap<>();
+            HashMap<String, Student> studenten = DBStudent.getStudenten();
+            HashMap<String, Ouder> ouders = DBOuder.getOuders();
+            Voorkeur[] voorkeuren;
+
             con = DBConnector.getConnection();
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-            String sql = "SELECT toewijzingsaanvraag nummer, Status toewijzingsaanvraag, Rijksregisternummer Ouder, Rijksregisternummer Kind "
-                    + "FROM Toewijzingsaanvraag "
-                    + "WHERE toewijzingsaanvraagNummer = " + toewijzingsaanvraagNummer;
-            // let op de spatie na 'summary' en 'Students' in voorgaande SQL
+            String sql = "SELECT * "
+                    + "FROM Toewijzingsaanvraag";
             ResultSet srs = stmt.executeQuery(sql);
-            String statusToewijzingsaanvraag, rijksregisternummerOuder, rijksregisternummerKind;
+
+            String rijksregisternummerStudent, rijksregisternummerOuder;
             int toewijzingsaanvraagnummer;
+            boolean thuisscholingToegewezen;
+            StatusToewijzingsaanvraag status;
 
+            while (srs.next()) {
+                toewijzingsaanvraagnummer = srs.getInt("Toewijzingsaanvraagnummer");
+                rijksregisternummerStudent = srs.getString("RijksregisternummerStudent");
+                rijksregisternummerOuder = srs.getString("RijksregisternummerOuder");
+                //TODO thuisscholing een boolean maken in database
+                thuisscholingToegewezen = srs.getBoolean("ThuisscholingToegewezen");
+                //TODO string van maken in database
+                status = StatusToewijzingsaanvraag.valueOf(srs.getString("Status_toewijzingsaanvraag"));
 
-            if (srs.next()) {
-                toewijzingsaanvraagnummer = srs.getInt("toewijzingsaanvraag nummer");
-                statusToewijzingsaanvraag = srs.getString("Status toewijzingsaanvraag");
-                rijksregisternummerOuder = srs.getString("rijksregisternummerOuder");
-                rijksregisternummerKind= srs.getString("rijksregisternummerKind");
+                Ouder ouder = ouders.get(rijksregisternummerOuder);
+                Student student = studenten.get(rijksregisternummerStudent);
 
+                voorkeuren = getVoorkeuren(toewijzingsaanvraagnummer);
 
-            } else {// we verwachten slechts 1 rij...
-                DBConnector.closeConnection(con);
-                return null;
+                Toewijzingsaanvraag toewijzingsaanvraag = new Toewijzingsaanvraag(toewijzingsaanvraagnummer,
+                        ouder, student, voorkeuren, thuisscholingToegewezen, status);
+                toewijzingsaanvragen.put(toewijzingsaanvraagnummer, toewijzingsaanvraag);
             }
 
-            Toewijzingsaanvraag toewijzingsaanvraag = new Toewijzingsaanvraag(toewijzingsaanvraagnummer,statusToewijzingsaanvraag,rijksregisternummerOuder,rijksregisternummerKind);
-            ArrayList<String> majors = new ArrayList<String>();
-
-
             DBConnector.closeConnection(con);
-            return toewijzingsaanvraag;
+            return toewijzingsaanvragen;
+        } catch (DBException dbe) {
+            dbe.printStackTrace();
+            DBConnector.closeConnection(con);
+            throw dbe;
         } catch (Exception ex) {
             ex.printStackTrace();
             DBConnector.closeConnection(con);
             throw new DBException(ex);
         }
-
     }
 
+    private static Voorkeur[] getVoorkeuren(int toewijzingsaanvraagnummer) throws DBException {
+        Voorkeur[] voorkeuren = new Voorkeur[3];
+        voorkeuren[0] = getVoorkeur(toewijzingsaanvraagnummer, 1);
+        voorkeuren[1] = getVoorkeur(toewijzingsaanvraagnummer, 2);
+        voorkeuren[2] = getVoorkeur(toewijzingsaanvraagnummer, 3);
+        return voorkeuren;
+    }
+
+    private static Voorkeur getVoorkeur(int toewijzingsaanvraagnummer, int rang) throws DBException {
+        Connection con = null;
+        try {
+            HashMap<Integer, School> scholen = DBSchool.getScholenMap();
+
+            con = DBConnector.getConnection();
+            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+            String sql = "SELECT * "
+                    + "FROM BestaatUitVoorkeur " +
+                    "WHERE Toewijzingsaanvraagnummer = " + toewijzingsaanvraagnummer + " " +
+                    "AND Rang = " + rang;
+            ResultSet srs = stmt.executeQuery(sql);
+
+            StatusVoorkeur status;
+            int schoolnummer;
+            double afstand;
+            boolean broerOfZusAanwezig;
+            School school;
+
+            if(srs.next()) {
+                afstand = srs.getDouble("Afstand");
+                //TODO boolean van maken in database
+                broerOfZusAanwezig = srs.getBoolean("Broer_of_zus_aanwezig");
+                //TODO string van maken
+                status = StatusVoorkeur.valueOf(srs.getString("StatusVoorkeur"));
+                schoolnummer = srs.getInt("Schoolnummer");
+                school = scholen.get(schoolnummer);
+
+                return new Voorkeur(school, afstand, broerOfZusAanwezig, status);
+            } else {
+                DBConnector.closeConnection(con);
+                return null;
+            }
+
+        } catch (DBException dbe) {
+            dbe.printStackTrace();
+            DBConnector.closeConnection(con);
+            throw dbe;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            DBConnector.closeConnection(con);
+            throw new DBException(ex);
+        }
+    }
+
+    /*
     public static void save(Toewijzingsaanvraag t) throws DBException {
         Connection con = null;
         try {
@@ -90,33 +155,6 @@ public class DBToewijzingsaanvraag {
 
 
             DBConnector.closeConnection(con);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            DBConnector.closeConnection(con);
-            throw new DBException(ex);
-        }
-    }
-
-    public static ArrayList<Toewijzingsaanvraag> getToewijzingsaanvragen() throws DBException {
-        Connection con = null;
-        try {
-            con = DBConnector.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-            String sql = "SELECT Toewijzingsaanvraag nummer "
-                    + "FROM Toewijzingsaanvraag";
-            ResultSet srs = stmt.executeQuery(sql);
-
-            ArrayList<Toewijzingsaanvraag> toewijzingsaanvragen = new ArrayList<Toewijzingsaanvraag>();
-            while (srs.next())
-                toewijzingsaanvragen.add(getToewijzingsaanvraag(srs.getInt("Toewijzingsaanvraag nummer")));
-
-            DBConnector.closeConnection(con);
-            return toewijzingsaanvragen;
-        } catch (DBException dbe) {
-            dbe.printStackTrace();
-            DBConnector.closeConnection(con);
-            throw dbe;
         } catch (Exception ex) {
             ex.printStackTrace();
             DBConnector.closeConnection(con);
