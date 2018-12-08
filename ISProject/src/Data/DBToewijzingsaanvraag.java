@@ -121,46 +121,98 @@ public class DBToewijzingsaanvraag {
         }
     }
 
-    /*
-    public static void save(Toewijzingsaanvraag t) throws DBException {
+    public static void setToewijzingsaanvragen(HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen)
+            throws DBException {
+
         Connection con = null;
         try {
             con = DBConnector.getConnection();
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String sql;
+            ResultSet srs;
 
-            String sql = "SELECT toewijzingsaanvraag nummer "
-                    + "FROM Toewijzingsaanvraag "
-                    + "WHERE toewijzingsaanvraagNummer = "
-                    + t.getToewijzingsaanvraagNummer();
-            ResultSet srs = stmt.executeQuery(sql);
-            if (srs.next()) {
-                // UPDATE
-                sql = "UPDATE Toewijzingsaanvraag "
-                        + "SET Status toewijzingsaanvraag  = '" + t.getStatusToewijzingsaanvraag() + "'"
-                        + ", Rijksregisternummer Ouder = '" + t.getRijksregisternummerOuder() + "'"
-                        + ", Rijksregisternummer Kind = '" + t.getRijksregisternummerKind() + "'"
-                        + "WHERE toewijzingsaanvraag nummer = " + t.getToewijzingsaanvraagNummer()
-                ;
-                stmt.executeUpdate(sql);
-            } else {
-                // INSERT
-                sql = "INSERT into Toewijzingsaanvraag "
-                        + "VALUES ('"  + t.getToewijzingsaanvraagNummer()
-                        + ", '" + t.getStatusToewijzingsaanvraag() + "'"
-                        + ", '" + t.getRijksregisternummerOuder() + "'"
-                        + ", '" + t.getRijksregisternummerKind() + "');";
+            for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values()) {
+                int aanvraagnummer = toewijzingsaanvraag.getToewijzingsaanvraagNummer();
 
-                stmt.executeUpdate(sql);
+                // kijken of toewijzingsaanvraag al in de data base zit
+                sql = "SELECT * " +
+                        "FROM Toewijzingsaanvraag " +
+                        "WHERE Toewijzingsaanvraagnummer = " + aanvraagnummer;
+
+                srs = stmt.executeQuery(sql);
+
+                if(srs.next()) { // zit in de database
+                    sql = "UPDATE Toewijzingsaanvraag " +
+                            "SET " +
+                            "StatusToewijzingsaanvraag = "
+                            + toewijzingsaanvraag.getStatusToewijzingsaanvraag().toString() + "," +
+                            "ThuisscholingToegewezen = " + toewijzingsaanvraag.isThuisscholingToegewezen() + "," +
+                            "RijksregisternummerOuder = "
+                            + toewijzingsaanvraag.getOuder().getRijksregisterNummer() + "," +
+                            "RijksregisternummerStudent = "
+                            + toewijzingsaanvraag.getStudent().getRijksregisterNummer() +
+                            " WHERE Toewijzingsaanvraagnummer = " + aanvraagnummer;
+
+                    stmt.executeQuery(sql);
+                } else { // zit niet in de database
+                    sql = "INSERT INTO Toewijzingsaanvraag " +
+                            "VALUES (" +
+                            aanvraagnummer + "," +
+                            toewijzingsaanvraag.getStatusToewijzingsaanvraag().toString() + "," +
+                            toewijzingsaanvraag.isThuisscholingToegewezen() + "," +
+                            toewijzingsaanvraag.getStudent().getRijksregisterNummer() + "," +
+                            toewijzingsaanvraag.getOuder().getRijksregisterNummer() +
+                            ")";
+
+                    stmt.executeQuery(sql);
+                    setVoorkeuren(toewijzingsaanvraag.getVoorkeuren(), aanvraagnummer);
+                }
             }
-
-
             DBConnector.closeConnection(con);
-        } catch (Exception ex) {
+        }
+
+        catch (Exception ex) {
             ex.printStackTrace();
             DBConnector.closeConnection(con);
             throw new DBException(ex);
         }
     }
-    */
+
+    private static void setVoorkeuren(Voorkeur[] voorkeuren, int aanvraagnummer) throws DBException {
+        for (int i = 0; i < voorkeuren.length; i++)
+            setVoorkeur(voorkeuren[i], aanvraagnummer, i+1);
+    }
+
+    private static void setVoorkeur(Voorkeur voorkeur, int aanvraagnummer, int rang) throws DBException{
+        Connection con = null;
+        try {
+            con = DBConnector.getConnection();
+            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String sql;
+            int schoolnummer;
+
+            schoolnummer = DBSchool.getSchoolnummer(voorkeur.getSchool());
+
+            sql = "INSERT INTO BestaatUitVoorkeur " +
+                    "(" +
+                    aanvraagnummer + "," +
+                    schoolnummer + "," +
+                    voorkeur.getStatus().toString() + "," +
+                    voorkeur.getAfstand() + "," +
+                    voorkeur.isBroerOfZusAanwezig() + "," +
+                    rang +
+                    ")";
+
+            stmt.executeQuery(sql);
+
+            DBConnector.closeConnection(con);
+        }
+
+        catch (Exception ex) {
+            ex.printStackTrace();
+            DBConnector.closeConnection(con);
+            throw new DBException(ex);
+        }
+    }
 }
 

@@ -56,45 +56,57 @@ public class DBStudent {
         }
         return studenten;
     }
-/*
-    public static void saveStudent(Student s) throws DBException {
+
+    // TODO what als programma afgesloten word in ontwerp
+    // TODO toewijzingsaanvraag niet opnemen in database
+    public static void setStudenten(HashMap<String, Student> studentenMap) throws DBException {
         Connection con = null;
         try {
             con = DBConnector.getConnection();
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String sql;
+            ResultSet srs;
 
-            String sql = "SELECT Rijksregisternummer Student "
-                    + "FROM  "
-                    + "WHERE Rijkssregisternummer Student = "
-                    + s.getRijksregisterNummer();
-            ResultSet srs = stmt.executeQuery(sql);
-            if (srs.next()) {
+            for (Student student: studentenMap.values()) {
+                Ouder ouder = student.getOuder();
+                School school = student.getToegewezenSchool();
 
-                sql = "UPDATE Student "
-                        + "SET Telefoonnummer = '" + s.getPhoneNumber()+ "'"
-                        + ", Rijksregisternummer Ouder = '" + s.getOuder() + "'"
-                        + "WHERE number = " + s.getRijksregisterNummer();
-                ;
-                stmt.executeUpdate(sql);
-            } else {
+                if(ouder != null) {
+                    sql = "UPDATE Student " +
+                            "SET RijksregisternummerOuder = " + ouder.getRijksregisterNummer() +
+                            " WHERE Rijksregisternummer = " + student.getRijksregisterNummer();
+                    stmt.executeQuery(sql);
+                } else {
+                    sql = "UPDATE Student " +
+                            "SET RijksregisternummerOuder = NULL" +
+                            "WHERE Rijksregisternummer = " + student.getRijksregisterNummer();
+                    stmt.executeQuery(sql);
+                }
 
-                sql = "INSERT into Student "
-                        + "(Rijksregisternummer Student, Telefoonnummer, Rijksregisternummer Ouder) "
-                        + "VALUES (" + s.getRijksregisterNummer()
-                        + ", '" + s.getPhoneNumber() + "'"
-                        + ", '" + s.getOuder() + "')";
-                stmt.executeUpdate(sql);
+                if(school != null) {
+                    int schoolnummer = DBSchool.getSchoolnummer(school);
+
+                    sql = "UPDATE Student " +
+                            "SET Schoolnummer = " + schoolnummer +
+                            " WHERE Rijksregisternummer = " + student.getRijksregisterNummer();
+
+                    stmt.executeQuery(sql);
+                } else {
+                    sql = "UPDATE Student " +
+                            "SET Schoolnummer = NULL " +
+                            "WHERE Rijksregisternummer = " + student.getRijksregisterNummer();
+
+                    stmt.executeQuery(sql);
+                }
             }
-
-
-            stmt.executeUpdate(sql);
-
             DBConnector.closeConnection(con);
-        } catch (Exception ex) {
+        }
+
+        catch (Exception ex)
+        {
             ex.printStackTrace();
             DBConnector.closeConnection(con);
             throw new DBException(ex);
         }
     }
-    */
 }
