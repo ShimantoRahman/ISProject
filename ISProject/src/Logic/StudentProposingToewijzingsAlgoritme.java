@@ -19,18 +19,18 @@ public class StudentProposingToewijzingsAlgoritme implements IToewijzingsAlgorit
     // <Toewijzingsaanvraagnummer, Toewijzingsaanvraag object>
     private HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen;
     private ArrayList<School> scholen;
-    private IIndividueleProcedure individueleProcedure;
+    private ISchoolProcedure schoolProcedure;
 
 
     // constructors
     public StudentProposingToewijzingsAlgoritme(HashMap<String, Ouder> ouders, HashMap<String, Student> studenten,
                                                 HashMap<Integer, Toewijzingsaanvraag> toewijzingsaanvragen,
-                                                ArrayList<School> scholen, IIndividueleProcedure individueleProcedure) {
+                                                ArrayList<School> scholen, ISchoolProcedure schoolProcedure) {
         this.ouders = ouders;
         this.studenten = studenten;
         this.toewijzingsaanvragen = toewijzingsaanvragen;
         this.scholen = scholen;
-        this.individueleProcedure = individueleProcedure;
+        this.schoolProcedure = schoolProcedure;
     }
 
     // public methoden
@@ -39,14 +39,12 @@ public class StudentProposingToewijzingsAlgoritme implements IToewijzingsAlgorit
         try {
             controleerInstantieVariabelen();
             voorlopigeToewijzingVanAlleKinderenAanEersteVoorkeur();
-            toewijzingsProcedureVoorElkKind();
-            toewijzingsProcedureVoorNietToegewezenKinderen();
+            voerSchoolProceduresUit();
             definitieveToewijzingVanAlleKinderen();
         } catch (ToewijzingsaanvraagException e) {
             System.out.println(e.getMessage());
             System.exit(0);
         }
-
     }
 
     private void controleerInstantieVariabelen() throws ToewijzingsaanvraagException {
@@ -58,8 +56,8 @@ public class StudentProposingToewijzingsAlgoritme implements IToewijzingsAlgorit
             throw new ToewijzingsaanvraagException("Arraylist scholen is null");
         if(toewijzingsaanvragen == null)
             throw new ToewijzingsaanvraagException("Hashmap toewijzingsaanvragen is null");
-        if(individueleProcedure == null)
-            throw new ToewijzingsaanvraagException("Individueleprocedure is null");
+        if(schoolProcedure == null)
+            throw new ToewijzingsaanvraagException("Schoolprocedure is null");
     }
 
     // private hulpmethoden
@@ -96,33 +94,18 @@ public class StudentProposingToewijzingsAlgoritme implements IToewijzingsAlgorit
         }
     }
 
-    private void toewijzingsProcedureVoorElkKind() {
-        for (Toewijzingsaanvraag toewijzingsaanvraag: toewijzingsaanvragen.values())
-            individueleProcedure.startIndividueleProcedure(toewijzingsaanvraag);
-    }
-
-    private void toewijzingsProcedureVoorNietToegewezenKinderen() {
-        HashMap<Integer, Toewijzingsaanvraag> nietToegewezenAanvragen;
-        while(true) {
-            nietToegewezenAanvragen = getNietToegewezenAanvragen(toewijzingsaanvragen);
-            if(nietToegewezenAanvragen.size() == 0)
-                break;
-            else {
-                for (Toewijzingsaanvraag toewijzingsaanvraag: nietToegewezenAanvragen.values())
-                    individueleProcedure.startIndividueleProcedure(toewijzingsaanvraag);
-            }
+    private void voerSchoolProceduresUit() {
+        while (isErEenSchoolMetTeVeelStudenten()) {
+            for (School school: scholen)
+                schoolProcedure.startProcedure(school);
         }
     }
 
-    // retourtneert een hashmap met alle toewijzingsaanvragen die nog geen school/thuisscholing zijn toegewezen
-    private HashMap<Integer, Toewijzingsaanvraag> getNietToegewezenAanvragen
-    (HashMap<Integer, Toewijzingsaanvraag> aanvragen) {
-        HashMap<Integer, Toewijzingsaanvraag> nietToegewezenAanvragen = new HashMap<>();
-        for (Toewijzingsaanvraag toewijzingsaanvraag: aanvragen.values()) {
-            if(!toewijzingsaanvraag.isThuisscholingToegewezen()
-                    && toewijzingsaanvraag.getStudent().getToegewezenSchool() == null)
-                nietToegewezenAanvragen.put(toewijzingsaanvraag.getToewijzingsaanvraagNummer(), toewijzingsaanvraag);
-        } return nietToegewezenAanvragen;
+    private boolean isErEenSchoolMetTeVeelStudenten() {
+        for (School school: scholen) {
+            if (school.getStudenten().size() > school.getAantalPlaatsen())
+                return true;
+        } return false;
     }
 
     private void definitieveToewijzingVanAlleKinderen() {
