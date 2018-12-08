@@ -1,5 +1,6 @@
 package SysteemKlasses;
 
+import Data.*;
 import GUI.Controllers.ControllerAdminLoginIn;
 import GUI.Controllers.ControllerDashboard;
 import GUI.Controllers.ControllerUserLogIn;
@@ -62,30 +63,31 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // TODO lees alle data in
-        //setStudenten(Data.getStudenten());
-        //setOuders(Data.getOuders());
-        //setToewijzingsaanvragen(Data.getToewijzingsaanvragen());
-        //setScholen(Data.getScholen());
-
-        // voorlopig gewoon instantieren
-        studenten = new HashMap<>();
-        ouders = new HashMap<>();
-        toewijzingsaanvragen = new HashMap<>();
-        scholen = new ArrayList<>();
-
-        //testScenario();
-        testdata();
+        // TODO verwijder deze test variabele
+        final boolean testMetDatabase = false;
+        // database inlezen
+        if(testMetDatabase) {
+            ouders = DBOuder.getOuders();
+            scholen = DBSchool.getScholen();
+            studenten = DBStudent.getStudenten();
+            toewijzingsaanvragen = DBToewijzingsaanvraag.getToewijzingsaanvragen();
+        } else {
+            studenten = new HashMap<>();
+            ouders = new HashMap<>();
+            toewijzingsaanvragen = new HashMap<>();
+            scholen = new ArrayList<>();
+            testdata();
+        }
 
         // algoritme
         IAfstandBerekeningFormule afstandBerekeningFormule = new HaversinFormule();
         ISortingAlgoritm sortingAlgoritm = new SelectionSort(afstandBerekeningFormule);
-        IIndividueleProcedure individueleProcedure =
-                new BroerZusAfstandLotingIndividueleProcedure(ouders, studenten, toewijzingsaanvragen, scholen,
-                        sortingAlgoritm, afstandBerekeningFormule);
+        ISchoolProcedure schoolProcedure =
+                new BroerZusAfstandLotingSchoolProcedure(ouders, studenten, toewijzingsaanvragen, scholen,
+                sortingAlgoritm, afstandBerekeningFormule);
         IToewijzingsAlgoritme toewijzingsAlgoritme =
                 new StudentProposingToewijzingsAlgoritme(ouders, studenten, toewijzingsaanvragen, scholen,
-                        individueleProcedure);
+                        schoolProcedure);
 
         // GUI
 
@@ -121,7 +123,16 @@ public class Main extends Application {
         primaryStage.setTitle("Toewijzingsaanvraag");
         primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(event -> {
-            //TODO schrijf alle data weg naar de database
+            if(testMetDatabase) {
+                try {
+                    DBStudent.setStudenten(studenten);
+                    DBToewijzingsaanvraag.setToewijzingsaanvragen(toewijzingsaanvragen);
+                } catch (DBException e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                    System.exit(0);
+                }
+            }
             primaryStage.close();
         });
         primaryStage.show();

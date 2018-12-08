@@ -18,16 +18,8 @@ public class Ouder extends Persoon {
         return emailAdres;
     }
 
-    public void setEmailAdres(String emailAdres) {
-        this.emailAdres = emailAdres;
-    }
-
     public Adres getAdres() {
         return adres;
-    }
-
-    public void setAdres(Adres adres) {
-        this.adres = adres;
     }
 
     public String toString() {
